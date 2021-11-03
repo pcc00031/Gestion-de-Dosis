@@ -93,6 +93,10 @@ public:
     Dosis(const Dosis& orig);
     virtual ~Dosis();
 
+    /* METODOS */
+
+    string fabToString(const Fabricante &f);
+
     /* OPERADORES */
 
     Dosis& operator=(const Dosis& right);

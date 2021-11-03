@@ -24,6 +24,23 @@ id(orig.id), fabricante(orig.fabricante), idLote(orig.idLote),
 fechaCaducidad(orig.fechaCaducidad), fechaFabricacion(orig.fechaFabricacion), estado(orig.estado) {
 }
 
+/* METODOS */
+
+string Dosis::fabToString(const Fabricante &f) {
+    string fab;
+    switch (f) {
+        case Fabricante::Pfizer: fab = "Pfizer";
+            break;
+        case Fabricante::Moderna: fab = "Moderna";
+            break;
+        case Fabricante::AstraZeneca: fab = "AstraZeneca";
+            break;
+        case Fabricante::Johnson: fab = "Johnson";
+            break;
+    }
+    return fab;
+}
+
 /* OPERADORES */
 
 Dosis& Dosis::operator=(const Dosis& right) {

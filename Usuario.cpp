@@ -14,18 +14,15 @@ latitud(_lat), longitud(_long) {
 }
 
 Usuario::Usuario() {
-    //dosis = ListaEnlazada<Dosis*>();
 }
 
 Usuario::Usuario(std::string NSS) :
 NSS(NSS) {
-    //dosis = ListaEnlazada<Dosis*>();
 }
 
 Usuario::Usuario(std::string nombre, std::string apellidos, std::string NSS, Fecha fechaNacimiento, UTM docimicilio) :
 nombre(nombre), apellidos(apellidos), NSS(NSS),
 fechaNacimiento(fechaNacimiento), docimicilio(docimicilio) {
-    dosis = ListaEnlazada<Dosis*>();
 }
 
 Usuario::Usuario(const Usuario& orig) :
@@ -99,26 +96,20 @@ int Usuario::edad() {
 }
 
 /**
- * @brief Agrega una dosis a la lista de dosis del Usuario
+ * @brief Agrega una dosis al vector de dosis del Usuario
  * @param d
  */
 void Usuario::addDosis(Dosis *d) {
-    this->dosis.insertarFinal(d);
+    this->dosis.push_back(d);
 }
 
 /**
  * @brief Muestra las dosis del usuario
- * @post Devuelve un VDinamico con las dosis del usuario
- * @return VDinamico de dosis
+ * @post Devuelve un vector con las dosis del usuario
+ * @return vector de dosis
  */
-VDinamico<Dosis*> Usuario::verDosis() {
-    VDinamico<Dosis*> aux;
-    Iterador<Dosis*> it = this->dosis.iterador();
-    while (!it.fin()) {
-        aux.insertar(it.dato());
-        it.siguiente();
-    }
-    return aux;
+vector<Dosis*> Usuario::getDosis() {
+    return this->dosis;
 }
 
 /**

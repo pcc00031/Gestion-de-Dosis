@@ -269,7 +269,7 @@ template <typename T>
 VDinamico<T*> AVL<T>::inorden(Nodo<T> *p, int nivel, VDinamico<T*> &v) {
     if (p) {
         inorden(p->izq, nivel + 1, v);
-        v.insertar(&p->dato); // FIXME inserta siempre el mismo
+        v.insertar(&p->dato);
         inorden(p->der, nivel + 1, v);
     }
     return v;

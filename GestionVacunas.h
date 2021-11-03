@@ -15,12 +15,14 @@
 #include "ListaEnlazada.h"
 #include "VDinamico.h"
 #include "AVL.h"
+#include "CentroVacunacion.h"
 
 class GestionVacunas {
 private:
-    AVL<Usuario> usuarios;
-    VDinamico<Dosis> dosis;
-    VDinamico<string> listadoNSS;
+    map<std::string, Usuario> usuarios;
+    vector<CentroVacunacion> centros;
+    vector<Dosis> reservaDosis;
+    vector<string> listadoNSS;
     int buscarVacunas(Fabricante &f, Estado &e);
 
 public:
@@ -37,24 +39,26 @@ public:
 
     /* METODOS */
 
-    Usuario* buscarUsuario(std::string nss);    
-    VDinamico<string> listadoCompletoNSS();
-    bool administrarDosis(Usuario &u, Fabricante fab);
+    void distribuirDosis();
+
+    Usuario& buscarUsuario(std::string nss);
+    vector<string> listadoCompletoNSS();
+    CentroVacunacion& vacunarUsuario(Usuario &u);
+
     int pautaCompleta();
     int pautaCompleta2();
-    VDinamico<Usuario*> listadoVacunacionNR();
+    vector<Usuario> listadoVacunacionNR();
+    void suministrar100DosisAlCentro(CentroVacunacion &centro, Fabricante f);
+    int numTotalVacunasTipo(Fabricante f);
 
     /* METODOS DE CARGA DE FICHEROS*/
 
-    void cargarDosis(std::string nombreFich);
     void cargarUsuarios(std::string nombreFich);
+    void cargarDosis(std::string nombreFich);
+    void cargarCentros(std::string nombreFich);
 
     // Visualizado de usuarios
     void verUsuarios(int numMostrar);
-
-    // Informacion de dosis restantes
-    int verDosisRestantes();
-    int verDosisRestantes(Fabricante f);
 
 };
 

@@ -32,7 +32,7 @@ private:
     std::string NSS = " ";
     Fecha fechaNacimiento;
     UTM docimicilio;
-    ListaEnlazada<Dosis*> dosis;
+    vector<Dosis*> dosis;
 
 public:
     /* CONSTRUCTORES */
@@ -47,7 +47,7 @@ public:
 
     int edad();
     void addDosis(Dosis *d);
-    VDinamico<Dosis*> verDosis();
+    vector<Dosis*> getDosis();
     Fabricante getDosisRecomendable();
 
     /* OPERADORES*/
@@ -77,7 +77,7 @@ inline std::ostream& operator<<(std::ostream& os, const Usuario& obj) {
             << "- NSS: " << obj.NSS << endl
             << "- Fecha nac: " << obj.fechaNacimiento << endl
             ;
-    std::cout << "- Dosis: " << endl << obj.dosis;
+    //std::cout << "- Dosis: " << endl << obj.dosis;
     return os;
 }
 

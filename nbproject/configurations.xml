@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>AVL.h</itemPath>
+      <itemPath>CentroVacunacion.h</itemPath>
       <itemPath>Dosis.h</itemPath>
       <itemPath>GestionVacunas.h</itemPath>
       <itemPath>Iterador.h</itemPath>
@@ -22,6 +23,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>CentroVacunacion.cpp</itemPath>
       <itemPath>Dosis.cpp</itemPath>
       <itemPath>GestionVacunas.cpp</itemPath>
       <itemPath>Usuario.cpp</itemPath>
@@ -40,6 +42,10 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>h</Elem>
+    <Elem>cpp</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
@@ -51,6 +57,10 @@
       <compileType>
       </compileType>
       <item path="AVL.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CentroVacunacion.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CentroVacunacion.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Dosis.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -102,6 +112,10 @@
         </asmTool>
       </compileType>
       <item path="AVL.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CentroVacunacion.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CentroVacunacion.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Dosis.cpp" ex="false" tool="1" flavor2="0">
       </item>

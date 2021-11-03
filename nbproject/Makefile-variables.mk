@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=Cygwin-Windows
 CND_ARTIFACT_DIR_Debug=dist/Debug/Cygwin-Windows
-CND_ARTIFACT_NAME_Debug=pr3
-CND_ARTIFACT_PATH_Debug=dist/Debug/Cygwin-Windows/pr3
+CND_ARTIFACT_NAME_Debug=pr4
+CND_ARTIFACT_PATH_Debug=dist/Debug/Cygwin-Windows/pr4
 CND_PACKAGE_DIR_Debug=dist/Debug/Cygwin-Windows/package
-CND_PACKAGE_NAME_Debug=pr3.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin-Windows/package/pr3.tar
+CND_PACKAGE_NAME_Debug=pr4.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin-Windows/package/pr4.tar
 # Release configuration
 CND_PLATFORM_Release=Cygwin-Windows
 CND_ARTIFACT_DIR_Release=dist/Release/Cygwin-Windows
-CND_ARTIFACT_NAME_Release=pr3
-CND_ARTIFACT_PATH_Release=dist/Release/Cygwin-Windows/pr3
+CND_ARTIFACT_NAME_Release=pr4
+CND_ARTIFACT_PATH_Release=dist/Release/Cygwin-Windows/pr4
 CND_PACKAGE_DIR_Release=dist/Release/Cygwin-Windows/package
-CND_PACKAGE_NAME_Release=pr3.tar
-CND_PACKAGE_PATH_Release=dist/Release/Cygwin-Windows/package/pr3.tar
+CND_PACKAGE_NAME_Release=pr4.tar
+CND_PACKAGE_PATH_Release=dist/Release/Cygwin-Windows/package/pr4.tar
 #
 # include compiler specific variables
 #
