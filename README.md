@@ -1,6 +1,6 @@
 # Gestion de Dosis
 ## Descripción
-En esta aplicación gestionamos la admniistración de dosis a una población
+En esta aplicación gestionamos la admnistración de dosis en centros especializados a un conjunto de usuarios
 
 ### Datos
 En la carpeta ficheros encontramos los distintos ficheros.txt con datos sobre dosis y usuarios
