@@ -29,7 +29,7 @@ public:
     /* CONSTRUCTORES*/
 
     GestionVacunas();
-    GestionVacunas(std::string nombreFichDosis, std::string nombreFichUsuarios);
+    GestionVacunas(std::string nombreFichDosis, std::string nombreFichUsuarios, std::string nombreFicheCentros);
     GestionVacunas(const GestionVacunas& orig);
     virtual ~GestionVacunas();
 

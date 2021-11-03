@@ -63,26 +63,26 @@ int main() {
             }
         }
 
-        cout << "Total: " << cont << endl;
+        cout << "Total: " << cont << endl << endl;
 
         cout << "-------------------------------------------------------------------------------"
                 "-------------------------------------------------------------------------------" << endl << endl;
 
         // Vacunar a todos los usuarios con más de 65 años.
-//        cont = 0;
-//        for (int i = 0; i < listadoNSS.size(); i++) {
-//            if (listadoNSS[i].back() == '0' ||
-//                    listadoNSS[i].back() == '2' ||
-//                    listadoNSS[i].back() == '4' ||
-//                    listadoNSS[i].back() == '6' ||
-//                    listadoNSS[i].back() == '8') { // comprobacion par
-//                u = gv.buscarUsuario(listadoNSS[i]);
-//                if (u.GetNombre() != " ") {
-//                    cont++;
-//                    gv.vacunarUsuario(u);
-//                }
-//            }
-//        }
+        //        cont = 0;
+        //        for (int i = 0; i < listadoNSS.size(); i++) {
+        //            if (listadoNSS[i].back() == '0' ||
+        //                    listadoNSS[i].back() == '2' ||
+        //                    listadoNSS[i].back() == '4' ||
+        //                    listadoNSS[i].back() == '6' ||
+        //                    listadoNSS[i].back() == '8') { // comprobacion par
+        //                u = gv.buscarUsuario(listadoNSS[i]);
+        //                if (u.GetNombre() != " ") {
+        //                    cont++;
+        //                    gv.vacunarUsuario(u);
+        //                }
+        //            }
+        //        }
 
         cout << "Total: " << cont << endl;
 
@@ -90,7 +90,7 @@ int main() {
                 "-------------------------------------------------------------------------------" << endl << endl;
 
         // Vacunar a todas las usuarias que se llaman Eva, mostrar su nombre completo y el id y
-        //la dirección del centro donde han sido vacunadas.
+        // la dirección del centro donde han sido vacunadas.
 
 
         cout << "-------------------------------------------------------------------------------"

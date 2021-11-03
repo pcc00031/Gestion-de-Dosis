@@ -223,7 +223,6 @@ CentroVacunacion& GestionVacunas::vacunarUsuario(Usuario &u) {
         aux = abs((distanciaUsuario - centros[i].getDireccion().calcularDistancia(centros[i].getDireccion())));
         if (aux < menorDistancia) {
             menorDistancia = aux;
-            cv = centros[i];
             posCentro = i;
         }
     }
