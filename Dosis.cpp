@@ -51,7 +51,6 @@ Dosis& Dosis::operator=(const Dosis& right) {
     this->fechaFabricacion = right.fechaFabricacion;
     this->idLote = right.idLote;
     this->estado = right.estado;
-
     return *this;
 }
 

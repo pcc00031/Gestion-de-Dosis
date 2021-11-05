@@ -17,6 +17,8 @@
 #include "AVL.h"
 #include "CentroVacunacion.h"
 
+//class CentroVacunacion; // para relacion circular
+
 class GestionVacunas {
 private:
     map<std::string, Usuario> usuarios;
@@ -42,13 +44,14 @@ public:
     void distribuirDosis();
 
     Usuario& buscarUsuario(std::string nss);
+    void actualizarUsuario(Usuario &u);
     vector<string> listadoCompletoNSS();
     CentroVacunacion& vacunarUsuario(Usuario &u);
 
     int pautaCompleta();
     int pautaCompleta2();
     vector<Usuario> listadoVacunacionNR();
-    void suministrar100DosisAlCentro(CentroVacunacion &centro, Fabricante f);
+    void suministrar100DosisAlCentro(CentroVacunacion &centro);
     int numTotalVacunasTipo(Fabricante f);
 
     /* METODOS DE CARGA DE FICHEROS*/

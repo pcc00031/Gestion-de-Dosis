@@ -5,6 +5,7 @@
  */
 
 #include "GestionVacunas.h"
+#include "CentroVacunacion.h"
 
 /* CONSTRUCTORES */
 
@@ -141,7 +142,16 @@ void GestionVacunas::distribuirDosis() {
  * @return dicho usuario
  */
 Usuario& GestionVacunas::buscarUsuario(std::string nss) {
-    return (usuarios.find(nss)->second);
+    return usuarios.find(nss)->second;
+}
+
+/**
+ * @brief Actualizacion de los datos de un usuario
+ * @param u
+ * @return 
+ */
+void GestionVacunas::actualizarUsuario(Usuario &u) {
+    usuarios.find(u.GetNSS())->second = u;
 }
 
 /**
@@ -152,7 +162,7 @@ Usuario& GestionVacunas::buscarUsuario(std::string nss) {
  * @return numero de usuarios con pauta completa
  */
 int GestionVacunas::pautaCompleta() {
-    int contador = 0; // FIXME float
+    int contador = 0; // FIXME devuelve int, pero luego se calcula % en float en main
     Usuario u;
     for (int i = 0; i < listadoNSS.size(); i++) {
         u = buscarUsuario(listadoNSS[i]);
@@ -201,8 +211,16 @@ int GestionVacunas::numTotalVacunasTipo(Fabricante f) {
     for (int i = 0; i < centros.size(); i++) {
         total += centros[i].numVacunasTipo(f);
     }
+    //
+    //    cout << "Centro 1: " << centros[0].verDosisRestantes() << " dosis restantes" << endl
+    //            << "Centro 2: " << centros[1].verDosisRestantes() << " dosis restantes" << endl
+    //            << "Centro 3: " << centros[2].verDosisRestantes() << " dosis restantes" << endl
+    //            << "Centro 4: " << centros[3].verDosisRestantes() << " dosis restantes" << endl
+    //            << "Centro 5: " << centros[4].verDosisRestantes() << " dosis restantes" << endl;
+
     return total;
 }
+
 
 /**
  * @brief Vacuna a un usuario
@@ -212,21 +230,19 @@ int GestionVacunas::numTotalVacunasTipo(Fabricante f) {
  * @return CentroVacunacion donde se vacuna
  */
 CentroVacunacion& GestionVacunas::vacunarUsuario(Usuario &u) {
-    double distanciaUsuario, menorDistancia, aux = 0;
-    distanciaUsuario = u.GetDocimicilio().calcularDistancia(u.GetDocimicilio());
-    //FIXME se puede hacer mas facil?
+    double menorDistancia, aux = 0;
     // comprobacion del centro mas cercano al domicilio del usuario
-    menorDistancia = abs((distanciaUsuario - centros[0].getDireccion().calcularDistancia(centros[0].getDireccion())));
+    menorDistancia = (u.GetDocimicilio().calcularDistancia(centros[0].getDireccion()));
     int posCentro = 0;
 
     for (int i = 1; i < centros.size(); i++) {
-        aux = abs((distanciaUsuario - centros[i].getDireccion().calcularDistancia(centros[i].getDireccion())));
+        aux = u.GetDocimicilio().calcularDistancia(centros[i].getDireccion());
         if (aux < menorDistancia) {
             menorDistancia = aux;
             posCentro = i;
         }
     }
-    centros[posCentro].anadirUsuarioLista(u); // Damos de alta al usuario
+    centros[posCentro].anadirUsuarioLista(u); // Damos de alta al usuario (de forma temporal)
     centros[posCentro].administrarDosis(u, u.getDosisRecomendable()); // Vacunamos
     return centros[posCentro];
 }
@@ -254,8 +270,22 @@ vector<Usuario> GestionVacunas::listadoVacunacionNR() {
  * @param centro
  * @param f
  */
-void GestionVacunas::suministrar100DosisAlCentro(CentroVacunacion &centro, Fabricante f){
-    // TODO si solo tenemos 250 vacunas en reserva solo podemos usar este metodo 2 veces ??
+void GestionVacunas::suministrar100DosisAlCentro(CentroVacunacion &centro) {
+    vector<Dosis> suministro;
+    vector<Dosis>::iterator it;
+    it = reservaDosis.begin();
+    int cont = 0;
+    // FIXME lo tendremos que hacer con ficheros y eso nose
+    if (reservaDosis.size() >= 100) {
+        // Recorremos primeros 8000 elementos e insertamos en vector auxiliar
+        while (cont < 100) {
+            suministro.push_back(*it);
+            ++it;
+            cont++;
+        }
+        reservaDosis.erase(reservaDosis.begin(), it);
+        centro.anadir100DosisAlmacen(suministro);
+    } else std::cout << "No quedan suficientes dosis para suministrar al centro" << endl;
 }
 
 /**
@@ -369,7 +399,10 @@ void GestionVacunas::cargarCentros(std::string nombreFich) {
  * @return 
  */
 void GestionVacunas::cargarDosis(std::string nombreFich) {
-
+    //FIXME carga fichero dosis
+    // no se cargan todas las dosis de golpe, sino por ciclos (GestionVacunas::distribuirDosis())
+    // cuando se haga la asignacion, dejar fichero abierto para luego, al saltar la alarma,
+    // se lean otras 100 dosis
     ifstream is("ficheros/" + nombreFich);
     string palabra;
     int corte = 0;
@@ -427,9 +460,18 @@ void GestionVacunas::cargarDosis(std::string nombreFich) {
  */
 void GestionVacunas::verUsuarios(int numMostrar) {
     Usuario u;
+    std::cout << " Total usuarios: " << usuarios.size() << endl;
     for (int i = 0; i < numMostrar; i++) {
         u = buscarUsuario(listadoNSS[i]);
         std::cout << u;
+
+        std::cout << "- - Num dosis: " << u.getDosis().size() << endl;
+        if (u.getDosis().size() > 0) {
+            for (int i = 0; i < u.getDosis().size(); i++) {
+                cout << "- Dosis " << i + 1 << ": " << endl;
+                cout << *u.getDosis()[i] << endl;
+            }
+        }
     }
 }
 
@@ -439,5 +481,6 @@ GestionVacunas & GestionVacunas::operator=(const GestionVacunas & right) {
     this->centros = right.centros;
     this->usuarios = right.usuarios;
     this->listadoNSS = right.listadoNSS;
+    this->reservaDosis = right.reservaDosis;
     return *this;
 }

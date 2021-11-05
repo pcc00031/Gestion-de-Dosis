@@ -9,7 +9,6 @@
 #ifndef USUARIO_H
 #define USUARIO_H
 
-#include <string>
 #include "Dosis.h"
 #include "ListaEnlazada.h"
 #include "VDinamico.h"

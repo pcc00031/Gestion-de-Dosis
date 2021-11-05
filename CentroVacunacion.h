@@ -11,17 +11,20 @@
 
 #include "Usuario.h"
 
+class GestionVacunas; // para relacion circular
+
 class CentroVacunacion {
 private:
     multimap<std::string, Dosis> dosis;
     list<Usuario*> usuarios;
     int id = 0;
     UTM direccion;
-
-    void alarmaFaltaDosis(Fabricante f);
+    GestionVacunas *gv;
+    void alarmaFaltaDosis();
 
 public:
     /* CONSTRUCTORES */
+
     CentroVacunacion();
     CentroVacunacion(int id, UTM direccion);
     CentroVacunacion(const CentroVacunacion& orig);
@@ -32,8 +35,10 @@ public:
     void cargaDosis(vector<Dosis> d);
     void anadirUsuarioLista(Usuario &u);
     bool administrarDosis(Usuario &u, Fabricante fab);
-    void anadir100DosisAlmacen();
+    void anadir100DosisAlmacen(vector<Dosis> d);
     int numVacunasTipo(Fabricante f);
+    
+    int verDosisRestantes(); // metodo auxiliar de comprobacion
 
     /* OPERADORES */
 
