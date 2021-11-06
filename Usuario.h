@@ -48,6 +48,7 @@ public:
     void addDosis(Dosis *d);
     vector<Dosis*> getDosis();
     Fabricante getDosisRecomendable();
+    int dosisPorAdministrar();
 
     /* OPERADORES*/
 

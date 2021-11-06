@@ -26,14 +26,14 @@ CentroVacunacion::~CentroVacunacion() {
 /* METODOS */
 
 /**
- * @brief Metodo que carga dosis iniciales a un centro
+ * @brief Metodo que carga dosis a un centro
  * @param d
  */
 void CentroVacunacion::cargaDosis(vector<Dosis> d) {
     for (int i = 0; i < d.size(); i++) {
         this->dosis.insert(pair<std::string, Dosis>(d[i].fabToString(d[i].GetFabricante()), d[i]));
     }
-    std::cout << " Dosis cargadas: " << this->dosis.size() << std::endl;
+    std::cout << " - Dosis cargadas en centro " << this->id << ": " << this->dosis.size() << std::endl;
 }
 
 /**
@@ -47,7 +47,7 @@ void CentroVacunacion::anadirUsuarioLista(Usuario &u) {
 /**
  * @brief Administra una dosis a un usuario
  * @post Administra una dosis que este en el almacen
- * y que sea compatible con la edad del usuario
+ * y que, a priori, sea compatible con la edad del usuario
  * @param u
  * @param fab
  * @return true: si la dosis es compatible con el usuario
@@ -69,7 +69,6 @@ bool CentroVacunacion::administrarDosis(Usuario &u, Fabricante fab) {
         while (it != dosis.end()) {
             if (it->second.GetFabricante() == fab && it->second.getEstado() == Estado::enAlmacen) {
                 u.addDosis(&it->second);
-                //gv->actualizarUsuario(u);
                 it->second.setEstado(Estado::administrada);
                 this->usuarios.pop_front(); // borramos al usuario de la lista              
                 return true;
@@ -88,12 +87,19 @@ bool CentroVacunacion::administrarDosis(Usuario &u, Fabricante fab) {
             ++it;
         }
         // Si no quedan dosis de ningun tipo en el almacen, salta la alarma
-
-//        alarmaFaltaDosis();
-//        administrarDosis(u, u.getDosisRecomendable()); // Tras la alarma el centro recibe 100 nuevas dosis
-        //TODO controlar que pasa si no llegan dosis nuevas
+        alarmaFaltaDosis();
+        it = dosis.begin();
+        while (it != dosis.end()) { // comprobamos si el centro ha recibido dosis nuevas
+            if (it->second.getEstado() == Estado::enAlmacen) {
+                administrarDosis(u, u.getDosisRecomendable());
+            }
+            ++it;
+        }
         return false;
     }
+    // problema de nuestra implementacion: 
+    // realizamos hasta 3 bucles para comprobar si hay dosis en almacen
+    // ventaja: estan todas las situaciones controladas
 }
 
 /**
@@ -128,7 +134,7 @@ void CentroVacunacion::anadir100DosisAlmacen(vector<Dosis> d) {
  * @param f
  */
 void CentroVacunacion::alarmaFaltaDosis() {
-    gv->suministrar100DosisAlCentro(*this); //FIXME ignorar fabricante f (pdf)
+    gv->suministrar100DosisAlCentro(*this); // ignorar fabricante f (pdf)
 }
 
 /**

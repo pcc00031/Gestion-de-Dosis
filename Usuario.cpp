@@ -127,6 +127,18 @@ Fabricante Usuario::getDosisRecomendable() {
         return Fabricante::Pfizer;
 }
 
+/**
+ * @brief Indica el numero de vacunas por administrar
+ * @return 
+ */
+int Usuario::dosisPorAdministrar() {
+    if (this->edad() < 13)
+        return 0;
+    if (this->edad() < 75)
+        return 2 - this->dosis.size();
+    else return 3 - this->dosis.size();
+}
+
 /* OPERADORES*/
 
 Usuario& Usuario::operator=(const Usuario& right) {

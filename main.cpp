@@ -24,7 +24,11 @@ int main() {
 
         // Distribucion de vacunas a los centros
 
-        gv.distribuirDosis(); //FIXME dejar fichero abierto
+        gv.cargarDosis(1, 8000);
+        gv.cargarDosis(2, 8200);
+        gv.cargarDosis(3, 8500);
+        gv.cargarDosis(4, 5000);
+        gv.cargarDosis(5, 50);
 
         cout << endl << "-------------------------------------------------------------------------------"
                 "-------------------------------------------------------------------------------" << endl << endl;
@@ -66,9 +70,8 @@ int main() {
             }
         }
 
-
         cout << "Total: " << cont << " usuarios con NSS par"
-                << " - " << cont1 << " usuarios pares vacunados" << endl << endl;
+                << endl << cont1 << " usuarios pares vacunados" << endl << endl;
 
         cout << " - Numero total de vacunas Pfizer: "
                 << gv.numTotalVacunasTipo(Fabricante::Pfizer) << endl;
@@ -84,6 +87,7 @@ int main() {
                 "-------------------------------------------------------------------------------" << endl << endl;
 
         // Vacunar a todos los usuarios con más de 65 años.
+
         cont = 0;
         cont1 = 0;
         for (int i = 0; i < listadoNSS.size(); i++) {
@@ -100,7 +104,7 @@ int main() {
             }
         }
         cout << "Total: " << cont << " usuarios mayores de 65"
-                << " - " << cont1 << " vacunados de segunda dosis" << endl << endl;
+                << endl << cont1 << " vacunados de segunda dosis" << endl << endl;
 
         cout << " - Numero total de vacunas Pfizer: "
                 << gv.numTotalVacunasTipo(Fabricante::Pfizer) << endl;
@@ -139,7 +143,7 @@ int main() {
         }
 
         cout << "Total: " << cont << " usuarios con nombre Eva"
-                << " - " << cont1 << " evas vacunadas con 3 vacunas" << endl << endl;
+                << endl << cont1 << " evas vacunadas con 3 vacunas" << endl << endl;
 
         cout << " - Numero total de vacunas Pfizer: "
                 << gv.numTotalVacunasTipo(Fabricante::Pfizer) << endl;
@@ -152,22 +156,18 @@ int main() {
         cout << "-------------------------------------------------------------------------------"
                 "-------------------------------------------------------------------------------" << endl << endl;
 
-        // Después de la vacunación, mostrar de nuevo el número total de dosis almacenadas de cada tipo
+        // Mostrar a todos los usuarios a los que se les ha administrado la pauta completa con las dosis recomendadas.
 
-        cout << " - Numero total de vacunas Pfizer: "
-                << gv.numTotalVacunasTipo(Fabricante::Pfizer) << endl;
-        cout << " - Numero total de vacunas AstraZeneca: "
-                << gv.numTotalVacunasTipo(Fabricante::AstraZeneca) << endl;
-        cout << " - Numero total de vacunas Johnson: "
-                << gv.numTotalVacunasTipo(Fabricante::Johnson) << endl;
-        cout << " - Numero total de vacunas Moderna: "
-                << gv.numTotalVacunasTipo(Fabricante::Moderna) << endl << endl;
+        cout << "Lista de usuarios con pauta recomendable: " << endl << endl;
+        int pautaRecomendable = gv.pautaCompletaRecomendable();
+        cout << "Usuarios con vacunacion no recomendable: " << gv.listadoVacunacionNR().size() << endl;
+        cout << "Usuarios con pauta completa recomendable: " << pautaRecomendable << endl;
+        cout << "Usuarios con pauta completa no recomendable: " << gv.pautaCompleta() << endl << endl;
         cout << "-------------------------------------------------------------------------------"
                 "-------------------------------------------------------------------------------" << endl << endl;
 
     } catch (std::exception &e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
-
     return 0;
 }

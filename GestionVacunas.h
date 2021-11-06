@@ -17,31 +17,28 @@
 #include "AVL.h"
 #include "CentroVacunacion.h"
 
-//class CentroVacunacion; // para relacion circular
-
 class GestionVacunas {
 private:
     map<std::string, Usuario> usuarios;
     vector<CentroVacunacion> centros;
-    vector<Dosis> reservaDosis;
     vector<string> listadoNSS;
-    int buscarVacunas(Fabricante &f, Estado &e);
+    
+    ifstream dosis; ///<  Guarda el estado del fichero de dosis
 
 public:
     /* CONSTRUCTORES*/
 
     GestionVacunas();
-    GestionVacunas(std::string nombreFichDosis, std::string nombreFichUsuarios, std::string nombreFicheCentros);
+    GestionVacunas(std::string nombreFichUsuarios, std::string nombreFicheCentros);
     GestionVacunas(const GestionVacunas& orig);
     virtual ~GestionVacunas();
 
     /* OPERADORES */
 
     GestionVacunas& operator=(const GestionVacunas& right);
+    bool operator==(const GestionVacunas& right) const;
 
     /* METODOS */
-
-    void distribuirDosis();
 
     Usuario& buscarUsuario(std::string nss);
     void actualizarUsuario(Usuario &u);
@@ -49,7 +46,7 @@ public:
     CentroVacunacion& vacunarUsuario(Usuario &u);
 
     int pautaCompleta();
-    int pautaCompleta2();
+    int pautaCompletaRecomendable();
     vector<Usuario> listadoVacunacionNR();
     void suministrar100DosisAlCentro(CentroVacunacion &centro);
     int numTotalVacunasTipo(Fabricante f);
@@ -57,7 +54,7 @@ public:
     /* METODOS DE CARGA DE FICHEROS*/
 
     void cargarUsuarios(std::string nombreFich);
-    void cargarDosis(std::string nombreFich);
+    void cargarDosis(int numCentro, int numDosis);
     void cargarCentros(std::string nombreFich);
 
     // Visualizado de usuarios
