@@ -61,6 +61,15 @@ Usuario & GestionVacunas::buscarUsuario(std::string nss) {
 }
 
 /**
+ * @brief Busca un centro dado su id
+ * @param id
+ * @return dicho centro
+ */
+CentroVacunacion& GestionVacunas::buscarCentro(int id) {
+    return centros.at(id - 1);
+}
+
+/**
  * @brief Actualizacion de los datos de un usuario
  * @param u
  * @return 
@@ -163,7 +172,6 @@ CentroVacunacion & GestionVacunas::vacunarUsuario(Usuario & u) {
             posCentro = i;
         }
     }
-    //FIXME siempre sale centro 3? (4)
     centros[posCentro].anadirUsuarioLista(u); // Damos de alta al usuario (de forma temporal)
     centros[posCentro].administrarDosis(u, u.getDosisRecomendable()); // Vacunamos
     return centros[posCentro];
@@ -188,12 +196,12 @@ vector<Usuario> GestionVacunas::listadoVacunacionNR() {
                 || it->second.getDosisRecomendable() != it->second.getDosis()[1]->GetFabricante()))
             // si alguna de las 2 es no recomendada, agregamos al listado
             VNR.push_back(it->second);
-        // Detectamos usuarios con 2 vacunas administradas
+        // Detectamos usuarios con 3 vacunas administradas
         if (it->second.getDosis().size() == 3 && (
                 it->second.getDosisRecomendable() != it->second.getDosis()[0]->GetFabricante()
                 || it->second.getDosisRecomendable() != it->second.getDosis()[1]->GetFabricante()
                 || it->second.getDosisRecomendable() != it->second.getDosis()[2]->GetFabricante()))
-            // si alguna de las 2 es no recomendada, agregamos al listado
+            // si alguna de las 3 es no recomendada, agregamos al listado
             VNR.push_back(it->second);
         ++it;
     }
@@ -201,16 +209,15 @@ vector<Usuario> GestionVacunas::listadoVacunacionNR() {
 }
 
 /**
- * @brief
+ * @brief Suministra nDosis si las hay al centro especifico
  * @param centro
  * @param f
  */
 void GestionVacunas::suministrarNDosisAlCentro(CentroVacunacion & centro, int nDosis) {
     vector<Dosis> suministro;
-    //    std::cout << "Dosis antes: " << centro.verDosisRestantes() << std::endl;
-    //    cargarDosis(centro.getId(), 100);
-    //    std::cout << "Dosis despues: " << centro.verDosisRestantes() << std::endl;
-    //FIXME como hago esto
+    suministro = cargarDosis(centro.getId(), nDosis);
+    if (suministro.size() < nDosis)
+        quedanVacunas = false;
     centro.anadirNDosisAlmacen(suministro);
 }
 
@@ -224,7 +231,6 @@ vector<string> GestionVacunas::listadoCompletoNSS() {
 
 /**
  * @brief Funcion para cargar los datos de un fichero de usuarios
- * @return 
  */
 void GestionVacunas::cargarUsuarios(std::string nombreFich) {
 
@@ -264,16 +270,16 @@ void GestionVacunas::cargarUsuarios(std::string nombreFich) {
         mes = stoi(palabra.substr(0, corte));
         palabra.erase(0, corte + 1);
 
-        corte = palabra.find('/');
+        corte = palabra.find(';');
         anno = stoi(palabra.substr(0, corte));
         palabra.erase(0, corte + 1);
 
         corte = palabra.find(';');
-        x = stoi(palabra.substr(0, corte));
+        x = stod(palabra.substr(0, corte));
         palabra.erase(0, corte + 1);
 
         corte = palabra.find(';');
-        y = stoi(palabra.substr(0, corte));
+        y = stod(palabra.substr(0, corte));
 
         Fecha f(dia, mes, anno);
         UTM pos(x, y);
@@ -306,27 +312,29 @@ void GestionVacunas::cargarCentros(std::string nombreFich) {
         palabra.erase(0, corte + 1);
 
         corte = palabra.find(';');
-        lat = stoi(palabra.substr(0, corte));
+        lat = stod(palabra.substr(0, corte));
         palabra.erase(0, corte + 1);
 
         corte = palabra.find('/');
-        lng = stoi(palabra.substr(0, corte));
+        lng = stod(palabra.substr(0, corte));
         palabra.erase(0, corte + 1);
 
         UTM direccion(lat, lng);
         CentroVacunacion cv(id, direccion);
+        cv.setGv(this);
         this->centros.push_back(cv);
     }
     is.close();
 }
 
 /**
- * @brief Instancia un fichero de dosis en el atributo dosis
+ * @brief Leemos numDosis de un fichero de texto y delvovemos los datos de esas dosis
  * @param numCentro
  * @param numDosis
- * @return 
+ * @return vector de dosis leidas
  */
-void GestionVacunas::cargarDosis(int numCentro, int numDosis) {
+vector<Dosis> GestionVacunas::cargarDosis(int numCentro, int numDosis) {
+    std::cout << "- Intentando suministrar " << numDosis << " dosis al centro " << numCentro << std::endl;
     if (!dosis.is_open()) {
         dosis.open("ficheros/dosis.txt", std::ifstream::in);
     }
@@ -338,6 +346,7 @@ void GestionVacunas::cargarDosis(int numCentro, int numDosis) {
     int dia = 0;
     int mes = 0;
     int anno = 0;
+
     while (getline(dosis, palabra)) {
         Dosis d;
 
@@ -381,9 +390,8 @@ void GestionVacunas::cargarDosis(int numCentro, int numDosis) {
             cont++;
         }
         // Cargamos en el centro
-        if (cont == numDosis) {
-            centros[numCentro - 1].anadirNDosisAlmacen(aux);
-            break;
+        if (cont == numDosis) { //FIXME controlar en el while
+            return aux;
         }
     }
 }
@@ -407,6 +415,16 @@ void GestionVacunas::verUsuarios(int numMostrar) {
             }
         }
     }
+}
+
+/* GETTERS Y SETTERS */
+
+void GestionVacunas::setQuedanVacunas(bool quedanVacunas) {
+    this->quedanVacunas = quedanVacunas;
+}
+
+bool GestionVacunas::isQuedanVacunas() const {
+    return quedanVacunas;
 }
 
 /* OPERADORES*/

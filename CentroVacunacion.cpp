@@ -76,13 +76,15 @@ bool CentroVacunacion::administrarDosis(Usuario &u, Fabricante fab) {
             ++it;
         }
         // Si no quedan dosis de ningun tipo en el almacen, salta la alarma
-       // alarmaFaltaDosis();
-        it = dosis.begin();
-        while (it != dosis.end()) { // comprobamos si el centro ha recibido dosis nuevas
-            if (it->second.getEstado() == Estado::enAlmacen) {
-                administrarDosis(u, u.getDosisRecomendable());
+        if (gv->isQuedanVacunas()) {
+            alarmaFaltaDosis(u.getDosisRecomendable());
+            it = dosis.begin();
+            while (it != dosis.end()) { // comprobamos si el centro ha recibido dosis nuevas
+                if (it->second.getEstado() == Estado::enAlmacen) {
+                    administrarDosis(u, u.getDosisRecomendable());
+                }
+                ++it;
             }
-            ++it;
         }
         return false;
     }
@@ -116,15 +118,16 @@ void CentroVacunacion::anadirNDosisAlmacen(vector<Dosis> packDosis) {
     for (int i = 0; i < packDosis.size(); i++) {
         this->dosis.insert(pair<std::string, Dosis>(packDosis[i].fabToString(packDosis[i].GetFabricante()), packDosis[i]));
     }
-    std::cout << " - Dosis cargadas en centro " << this->id << ": " << this->dosis.size() << std::endl;
+    std::cout << " - Dosis suministradas en centro " << this->id << ": " << packDosis.size() << std::endl;
 }
 
 /**
  * @brief Notifica si faltan dosis de un tipo en concreto
  * @param f
  */
-void CentroVacunacion::alarmaFaltaDosis() {
-    gv->suministrarNDosisAlCentro(*this, 100); // ignorar fabricante f (pdf)
+void CentroVacunacion::alarmaFaltaDosis(Fabricante f) {
+    std::cout << "- ALARMA: no quedan dosis de " << f << " en el centro " << this->id << std::endl;
+    gv->suministrarNDosisAlCentro(*this, 100);
 }
 
 /**
@@ -180,4 +183,8 @@ int CentroVacunacion::getId() const {
 
 void CentroVacunacion::setId(int id) {
     this->id = id;
+}
+
+void CentroVacunacion::setGv(GestionVacunas* gv) {
+    this->gv = gv;
 }

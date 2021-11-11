@@ -22,10 +22,12 @@ private:
     map<std::string, Usuario> usuarios;
     vector<CentroVacunacion> centros;
     vector<string> listadoNSS;
-    
+
+    bool quedanVacunas = true; ///<  Indica si quedan dosis disponibles
     ifstream dosis; ///<  Guarda el estado del fichero de dosis
 
 public:
+
     /* CONSTRUCTORES*/
 
     GestionVacunas();
@@ -41,6 +43,7 @@ public:
     /* METODOS */
 
     Usuario& buscarUsuario(std::string nss);
+    CentroVacunacion& buscarCentro(int id);
     void actualizarUsuario(Usuario &u);
     vector<string> listadoCompletoNSS();
     CentroVacunacion& vacunarUsuario(Usuario &u);
@@ -54,11 +57,13 @@ public:
     /* METODOS DE CARGA DE FICHEROS*/
 
     void cargarUsuarios(std::string nombreFich);
-    void cargarDosis(int numCentro, int numDosis);
+    vector<Dosis> cargarDosis(int numCentro, int numDosis);
     void cargarCentros(std::string nombreFich);
 
     // Visualizado de usuarios
     void verUsuarios(int numMostrar);
+    void setQuedanVacunas(bool quedanVacunas);
+    bool isQuedanVacunas() const;
 
 };
 

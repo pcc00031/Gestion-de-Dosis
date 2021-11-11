@@ -21,6 +21,12 @@ struct UTM {
     UTM() = default;
     UTM(double _lat, double _long);
     double calcularDistancia(UTM pos);
+
+    friend std::ostream& operator<<(std::ostream& os, const UTM& obj) {
+        std::cout << "- Latitud: " << obj.latitud << std::endl
+                << "- Longitud: " <<obj.longitud << std::endl;
+        return os;
+    }
 };
 
 /* DEFINICION DE LA CLASE USUARIO */

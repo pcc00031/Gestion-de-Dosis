@@ -20,7 +20,7 @@ private:
     int id = 0;
     UTM direccion;
     GestionVacunas *gv;
-    void alarmaFaltaDosis();
+    void alarmaFaltaDosis(Fabricante f);
 
 public:
     /* CONSTRUCTORES */
@@ -55,6 +55,7 @@ public:
     void setDireccion(UTM direccion);
     int getId() const;
     void setId(int id);
+    void setGv(GestionVacunas* gv);
 
 };
 

@@ -24,11 +24,11 @@ int main() {
 
         // Distribucion de vacunas a los centros
 
-        gv.cargarDosis(1, 8000);
-        gv.cargarDosis(2, 8200);
-        gv.cargarDosis(3, 8500);
-        gv.cargarDosis(4, 5000);
-        gv.cargarDosis(5, 50);
+        gv.suministrarNDosisAlCentro(gv.buscarCentro(1), 8000);
+        gv.suministrarNDosisAlCentro(gv.buscarCentro(2), 8200);
+        gv.suministrarNDosisAlCentro(gv.buscarCentro(3), 8500);
+        gv.suministrarNDosisAlCentro(gv.buscarCentro(4), 5000);
+        gv.suministrarNDosisAlCentro(gv.buscarCentro(5), 50);
 
         cout << endl << "-------------------------------------------------------------------------------"
                 "-------------------------------------------------------------------------------" << endl << endl;
@@ -51,27 +51,17 @@ int main() {
 
         Usuario u;
         vector<string> listadoNSS = gv.listadoCompletoNSS();
-        int cont, cont1 = 0;
         for (int i = 0; i < listadoNSS.size(); i++) {
-            if (listadoNSS[i].back() == '0' ||
-                    listadoNSS[i].back() == '2' ||
-                    listadoNSS[i].back() == '4' ||
-                    listadoNSS[i].back() == '6' ||
-                    listadoNSS[i].back() == '8') { // comprobacion par
+            if (listadoNSS[i].back() % 2 == 0) { // comprobacion par
                 u = gv.buscarUsuario(listadoNSS[i]);
                 if (u.GetNombre() != " ") {
-                    cont++;
                     gv.vacunarUsuario(u);
-                    gv.actualizarUsuario(u); //FIXME lo actualizo?
+                    gv.actualizarUsuario(u); //FIXME cambiar
                     if (u.getDosis().size() > 0) {
-                        cont1++;
                     }
                 }
             }
         }
-
-        cout << "Total: " << cont << " usuarios con NSS par"
-                << endl << cont1 << " usuarios pares vacunados" << endl << endl;
 
         cout << " - Numero total de vacunas Pfizer: "
                 << gv.numTotalVacunasTipo(Fabricante::Pfizer) << endl;
@@ -88,23 +78,15 @@ int main() {
 
         // Vacunar a todos los usuarios con más de 65 años.
 
-        cont = 0;
-        cont1 = 0;
         for (int i = 0; i < listadoNSS.size(); i++) {
             u = gv.buscarUsuario(listadoNSS[i]);
             if (u.GetNombre() != " " && u.edad() > 65) {
-                cont++;
                 gv.vacunarUsuario(u);
                 gv.actualizarUsuario(u);
                 if (u.getDosis().size() > 1) {
-                    for (int i = 0; i < u.getDosis().size(); i++) {
-                        cont1++;
-                    }
                 }
             }
         }
-        cout << "Total: " << cont << " usuarios mayores de 65"
-                << endl << cont1 << " vacunados de segunda dosis" << endl << endl;
 
         cout << " - Numero total de vacunas Pfizer: "
                 << gv.numTotalVacunasTipo(Fabricante::Pfizer) << endl;
@@ -121,29 +103,24 @@ int main() {
         // Vacunar a todas las usuarias que se llaman Eva, mostrar su nombre completo y el id y
         // la dirección del centro donde han sido vacunadas.
 
-        cont = 0;
-        cont1 = 0;
+        cout << "*** INFORMACION VACUNACION DE USUARIOS LLAMADOS EVA ***" << endl;
+
+        CentroVacunacion cv;
         for (int i = 0; i < listadoNSS.size(); i++) {
             u = gv.buscarUsuario(listadoNSS[i]);
             if (u.GetNombre() == "Eva") {
-                cont++;
-                gv.vacunarUsuario(u);
+                cv = gv.buscarCentro(gv.vacunarUsuario(u).getId());
+                cout << "CENTRO DE VACUNACION: " << cv.getId() << endl
+                        << "- Direccion: " << endl << cv.getDireccion()
+                        << endl << "DATOS VACUNADO:" << endl;
                 gv.actualizarUsuario(u);
-                //cout << u;
-                if (u.getDosis().size() > 2) {
-                    cont1++;
-                    //                    for (int i = 0; i < u.getDosis().size(); i++) {
-                    //                        cout << "- Dosis " << i + 1 << ": " << endl;
-                    //                        cout << *u.getDosis()[i] << endl;
-                    //                    }
-                } else {
-                    // cout << "- No tiene vacuna administrada" << endl << endl;
-                }
+                cout << u << endl
+                        << "-------------------------------------------------------------------------------" << endl << endl;
             }
         }
 
-        cout << "Total: " << cont << " usuarios con nombre Eva"
-                << endl << cont1 << " evas vacunadas con 3 vacunas" << endl << endl;
+        cout << "-------------------------------------------------------------------------------"
+                "-------------------------------------------------------------------------------" << endl << endl;
 
         cout << " - Numero total de vacunas Pfizer: "
                 << gv.numTotalVacunasTipo(Fabricante::Pfizer) << endl;
@@ -153,6 +130,7 @@ int main() {
                 << gv.numTotalVacunasTipo(Fabricante::Johnson) << endl;
         cout << " - Numero total de vacunas Moderna: "
                 << gv.numTotalVacunasTipo(Fabricante::Moderna) << endl << endl;
+
         cout << "-------------------------------------------------------------------------------"
                 "-------------------------------------------------------------------------------" << endl << endl;
 
