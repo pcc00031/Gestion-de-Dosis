@@ -26,17 +26,6 @@ CentroVacunacion::~CentroVacunacion() {
 /* METODOS */
 
 /**
- * @brief Metodo que carga dosis a un centro
- * @param d
- */
-void CentroVacunacion::cargaDosis(vector<Dosis> d) {
-    for (int i = 0; i < d.size(); i++) {
-        this->dosis.insert(pair<std::string, Dosis>(d[i].fabToString(d[i].GetFabricante()), d[i]));
-    }
-    std::cout << " - Dosis cargadas en centro " << this->id << ": " << this->dosis.size() << std::endl;
-}
-
-/**
  * @brief Agrega un usuario a la lista del centro
  * @param u
  */
@@ -87,7 +76,7 @@ bool CentroVacunacion::administrarDosis(Usuario &u, Fabricante fab) {
             ++it;
         }
         // Si no quedan dosis de ningun tipo en el almacen, salta la alarma
-        alarmaFaltaDosis();
+       // alarmaFaltaDosis();
         it = dosis.begin();
         while (it != dosis.end()) { // comprobamos si el centro ha recibido dosis nuevas
             if (it->second.getEstado() == Estado::enAlmacen) {
@@ -123,10 +112,11 @@ int CentroVacunacion::numVacunasTipo(Fabricante f) {
 /**
  * @brief Recibe 100 nuevas dosis
  */
-void CentroVacunacion::anadir100DosisAlmacen(vector<Dosis> d) {
-    for (int i = 0; i < d.size(); i++) {
-        this->dosis.insert(pair<std::string, Dosis>(d[i].fabToString(d[i].GetFabricante()), d[i]));
+void CentroVacunacion::anadirNDosisAlmacen(vector<Dosis> packDosis) {
+    for (int i = 0; i < packDosis.size(); i++) {
+        this->dosis.insert(pair<std::string, Dosis>(packDosis[i].fabToString(packDosis[i].GetFabricante()), packDosis[i]));
     }
+    std::cout << " - Dosis cargadas en centro " << this->id << ": " << this->dosis.size() << std::endl;
 }
 
 /**
@@ -134,7 +124,7 @@ void CentroVacunacion::anadir100DosisAlmacen(vector<Dosis> d) {
  * @param f
  */
 void CentroVacunacion::alarmaFaltaDosis() {
-    gv->suministrar100DosisAlCentro(*this); // ignorar fabricante f (pdf)
+    gv->suministrarNDosisAlCentro(*this, 100); // ignorar fabricante f (pdf)
 }
 
 /**

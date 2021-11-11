@@ -62,7 +62,7 @@ int main() {
                 if (u.GetNombre() != " ") {
                     cont++;
                     gv.vacunarUsuario(u);
-                    gv.actualizarUsuario(u);
+                    gv.actualizarUsuario(u); //FIXME lo actualizo?
                     if (u.getDosis().size() > 0) {
                         cont1++;
                     }

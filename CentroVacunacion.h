@@ -32,10 +32,9 @@ public:
 
     /* METODOS */
 
-    void cargaDosis(vector<Dosis> d);
     void anadirUsuarioLista(Usuario &u);
     bool administrarDosis(Usuario &u, Fabricante fab);
-    void anadir100DosisAlmacen(vector<Dosis> d);
+    void anadirNDosisAlmacen(vector<Dosis> packDosis);
     int numVacunasTipo(Fabricante f);
     
     int verDosisRestantes(); // metodo auxiliar de comprobacion

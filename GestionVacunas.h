@@ -48,7 +48,7 @@ public:
     int pautaCompleta();
     int pautaCompletaRecomendable();
     vector<Usuario> listadoVacunacionNR();
-    void suministrar100DosisAlCentro(CentroVacunacion &centro);
+    void suministrarNDosisAlCentro(CentroVacunacion &centro, int nDosis);
     int numTotalVacunasTipo(Fabricante f);
 
     /* METODOS DE CARGA DE FICHEROS*/

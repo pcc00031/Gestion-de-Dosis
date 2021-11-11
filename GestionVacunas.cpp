@@ -205,13 +205,13 @@ vector<Usuario> GestionVacunas::listadoVacunacionNR() {
  * @param centro
  * @param f
  */
-void GestionVacunas::suministrar100DosisAlCentro(CentroVacunacion & centro) {
+void GestionVacunas::suministrarNDosisAlCentro(CentroVacunacion & centro, int nDosis) {
     vector<Dosis> suministro;
     //    std::cout << "Dosis antes: " << centro.verDosisRestantes() << std::endl;
     //    cargarDosis(centro.getId(), 100);
     //    std::cout << "Dosis despues: " << centro.verDosisRestantes() << std::endl;
     //FIXME como hago esto
-    centro.anadir100DosisAlmacen(suministro);
+    centro.anadirNDosisAlmacen(suministro);
 }
 
 /**
@@ -382,7 +382,7 @@ void GestionVacunas::cargarDosis(int numCentro, int numDosis) {
         }
         // Cargamos en el centro
         if (cont == numDosis) {
-            centros[numCentro - 1].cargaDosis(aux);
+            centros[numCentro - 1].anadirNDosisAlmacen(aux);
             break;
         }
     }
