@@ -9,6 +9,8 @@
 #ifndef CENTROVACUNACION_H
 #define CENTROVACUNACION_H
 
+#include <map>
+#include <list>
 #include "Usuario.h"
 
 class GestionVacunas; // para relacion circular

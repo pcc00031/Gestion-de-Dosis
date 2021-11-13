@@ -11,7 +11,6 @@
 
 #include <ostream>
 #include <iostream>
-
 #include "fecha.h"
 
 /* ENUM CLASS PARA EL TIPO FABRICANTE */

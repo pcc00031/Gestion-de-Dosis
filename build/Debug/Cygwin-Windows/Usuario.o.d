@@ -1,9 +1,5 @@
 build/Debug/Cygwin-Windows/Usuario.o: Usuario.cpp Usuario.h Dosis.h \
- fecha.h ListaEnlazada.h NodoL.h Iterador.h VDinamico.h
+ fecha.h
 Usuario.h:
 Dosis.h:
 fecha.h:
-ListaEnlazada.h:
-NodoL.h:
-Iterador.h:
-VDinamico.h:

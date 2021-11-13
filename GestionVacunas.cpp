@@ -5,7 +5,6 @@
  */
 
 #include "GestionVacunas.h"
-#include "CentroVacunacion.h"
 
 /* CONSTRUCTORES */
 
@@ -26,7 +25,6 @@ GestionVacunas::GestionVacunas() {
  * @param nombreFichDosis
  * @param nombreFichUsuarios
  * @param nombreFicheCentros
- * 
  */
 GestionVacunas::GestionVacunas(std::string nombreFichUsuarios, std::string nombreFicheCentros) {
     cargarCentros(nombreFicheCentros);
@@ -39,7 +37,7 @@ GestionVacunas::GestionVacunas(std::string nombreFichUsuarios, std::string nombr
  * @param orig
  */
 GestionVacunas::GestionVacunas(const GestionVacunas& orig) :
-usuarios(orig.usuarios), centros(orig.centros), listadoNSS(orig.listadoNSS) {
+usuarios(orig.usuarios), centros(orig.centros), listadoNSS(orig.listadoNSS), quedanVacunas(orig.quedanVacunas) {
 }
 
 /*
@@ -87,12 +85,12 @@ void GestionVacunas::actualizarUsuario(Usuario & u) {
  */
 int GestionVacunas::pautaCompleta() {
     int contador = 0;
-    Usuario u;
+    Usuario *u;
     for (int i = 0; i < listadoNSS.size(); i++) {
-        u = buscarUsuario(listadoNSS[i]);
-        if (u.edad() < 75 && u.getDosis().size() == 2)
+        u = &buscarUsuario(listadoNSS[i]);
+        if (u->edad() < 75 && u->getDosis().size() == 2)
             contador++;
-        if (u.edad() > 75 && u.getDosis().size() == 3)
+        if (u->edad() > 75 && u->getDosis().size() == 3)
             contador++;
     }
     return contador;
@@ -181,28 +179,28 @@ CentroVacunacion & GestionVacunas::vacunarUsuario(Usuario & u) {
  * @brief Listado de usuarios con vacunacion no recomendada
  * @return vector de usuarios con pauta no recomendada
  */
-vector<Usuario> GestionVacunas::listadoVacunacionNR() {
-    vector<Usuario> VNR;
+vector<Usuario*> GestionVacunas::listadoVacunacionNR() {
+    vector<Usuario*> VNR;
     map<std::string, Usuario>::iterator it;
     it = usuarios.begin();
     while (it != usuarios.end()) {
         // Detectamos usuarios con solo 1 vacuna administrada 
         if (it->second.getDosis().size() == 1 &&
                 it->second.getDosisRecomendable() != it->second.getDosis()[0]->GetFabricante())
-            VNR.push_back(it->second);
+            VNR.push_back(&it->second);
         // Detectamos usuarios con 2 vacunas administradas
         if (it->second.getDosis().size() == 2 && (
                 it->second.getDosisRecomendable() != it->second.getDosis()[0]->GetFabricante()
                 || it->second.getDosisRecomendable() != it->second.getDosis()[1]->GetFabricante()))
             // si alguna de las 2 es no recomendada, agregamos al listado
-            VNR.push_back(it->second);
+            VNR.push_back(&it->second);
         // Detectamos usuarios con 3 vacunas administradas
         if (it->second.getDosis().size() == 3 && (
                 it->second.getDosisRecomendable() != it->second.getDosis()[0]->GetFabricante()
                 || it->second.getDosisRecomendable() != it->second.getDosis()[1]->GetFabricante()
                 || it->second.getDosisRecomendable() != it->second.getDosis()[2]->GetFabricante()))
             // si alguna de las 3 es no recomendada, agregamos al listado
-            VNR.push_back(it->second);
+            VNR.push_back(&it->second);
         ++it;
     }
     return VNR;
@@ -433,6 +431,7 @@ GestionVacunas & GestionVacunas::operator=(const GestionVacunas & right) {
     this->centros = right.centros;
     this->usuarios = right.usuarios;
     this->listadoNSS = right.listadoNSS;
+    this->quedanVacunas = right.quedanVacunas;
 
     return *this;
 }

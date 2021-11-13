@@ -9,9 +9,9 @@
 #ifndef USUARIO_H
 #define USUARIO_H
 
+#include <vector>
+#include <complex>
 #include "Dosis.h"
-#include "ListaEnlazada.h"
-#include "VDinamico.h"
 
 /* STRUCT DE COORDENADAS UTM */
 struct UTM {
@@ -24,7 +24,7 @@ struct UTM {
 
     friend std::ostream& operator<<(std::ostream& os, const UTM& obj) {
         std::cout << "- Latitud: " << obj.latitud << std::endl
-                << "- Longitud: " <<obj.longitud << std::endl;
+                << "- Longitud: " << obj.longitud << std::endl;
         return os;
     }
 };

@@ -9,13 +9,9 @@
 #ifndef GESTIONVACUNAS_H
 #define GESTIONVACUNAS_H
 
-#include <string>
-#include "Dosis.h"
-#include "Usuario.h"
-#include "ListaEnlazada.h"
-#include "VDinamico.h"
-#include "AVL.h"
 #include "CentroVacunacion.h"
+#include <fstream>
+#include <algorithm>
 
 class GestionVacunas {
 private:
@@ -24,7 +20,7 @@ private:
     vector<string> listadoNSS;
 
     bool quedanVacunas = true; ///<  Indica si quedan dosis disponibles
-    ifstream dosis; ///<  Guarda el estado del fichero de dosis
+    std::ifstream dosis; ///<  Guarda el estado del fichero de dosis
 
 public:
 
@@ -50,7 +46,7 @@ public:
 
     int pautaCompleta();
     int pautaCompletaRecomendable();
-    vector<Usuario> listadoVacunacionNR();
+    vector<Usuario*> listadoVacunacionNR();
     void suministrarNDosisAlCentro(CentroVacunacion &centro, int nDosis);
     int numTotalVacunasTipo(Fabricante f);
 
@@ -62,6 +58,9 @@ public:
 
     // Visualizado de usuarios
     void verUsuarios(int numMostrar);
+
+    /* GETTERS Y SETTERS */
+
     void setQuedanVacunas(bool quedanVacunas);
     bool isQuedanVacunas() const;
 

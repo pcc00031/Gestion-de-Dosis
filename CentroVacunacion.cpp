@@ -45,6 +45,7 @@ void CentroVacunacion::anadirUsuarioLista(Usuario &u) {
 bool CentroVacunacion::administrarDosis(Usuario &u, Fabricante fab) {
 
     // En primer lugar comprobamos que el usuario se ha agregadoa a la lista
+    // Al solo existir uno durante el proceso de vacunacion, siempre estara el primero
     if (this->usuarios.front() != &u) {
         return false;
     }

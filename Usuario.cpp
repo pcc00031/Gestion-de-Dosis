@@ -4,8 +4,6 @@
  * Author: Pedro Corpas
  */
 
-#include <complex>
-#include <iostream>
 #include "Usuario.h"
 
 /* CONSTRUCTORES */
