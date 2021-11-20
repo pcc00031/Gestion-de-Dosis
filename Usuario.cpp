@@ -25,7 +25,7 @@ fechaNacimiento(fechaNacimiento), docimicilio(docimicilio) {
 
 Usuario::Usuario(const Usuario& orig) :
 nombre(orig.nombre), apellidos(orig.apellidos), NSS(orig.NSS),
-fechaNacimiento(orig.fechaNacimiento), docimicilio(orig.docimicilio), dosis(orig.dosis) {
+fechaNacimiento(orig.fechaNacimiento), docimicilio(orig.docimicilio) {
 }
 
 Usuario::~Usuario() {
@@ -93,54 +93,9 @@ int Usuario::edad() {
     return edad;
 }
 
-/**
- * @brief Agrega una dosis al vector de dosis del Usuario
- * @param d
- */
-void Usuario::addDosis(Dosis *d) {
-    this->dosis.push_back(d);
-}
-
-/**
- * @brief Muestra las dosis del usuario
- * @post Devuelve un vector con las dosis del usuario
- * @return vector de dosis
- */
-vector<Dosis*> Usuario::getDosis() {
-    return this->dosis;
-}
-
-/**
- * @brief Comprueba la dosis recomendable para el usuario
- * @return Dosis recomendable en base a su edad
- */
-Fabricante Usuario::getDosisRecomendable() {
-    if (this->edad() > 12 && this->edad() <= 40) {
-        return Fabricante::Johnson;
-    } else if (this->edad() > 40 && this->edad() <= 50) {
-        return Fabricante::Moderna;
-    } else if (this->edad() > 50 && this->edad() <= 65) {
-        return Fabricante::AstraZeneca;
-    } else
-        return Fabricante::Pfizer;
-}
-
-/**
- * @brief Indica el numero de vacunas por administrar
- * @return 
- */
-int Usuario::dosisPorAdministrar() {
-    if (this->edad() < 13)
-        return 0;
-    if (this->edad() < 75)
-        return 2 - this->dosis.size();
-    else return 3 - this->dosis.size();
-}
-
 /* OPERADORES*/
 
 Usuario& Usuario::operator=(const Usuario& right) {
-    this->dosis = right.dosis;
     this->NSS = right.NSS;
     this->apellidos = right.apellidos;
     this->docimicilio = right.docimicilio;

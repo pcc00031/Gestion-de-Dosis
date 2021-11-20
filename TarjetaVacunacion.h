@@ -16,7 +16,7 @@
 
 class TarjetaVacunacion {
 private:
-    int id = 0;
+    std::string id = "";
     bool pautaCompleta = false;
     int idCentroCercano = 0;
     std::vector<Dosis*> dosisAdministradas;
@@ -26,16 +26,23 @@ public:
 
     /* CONSTRUCTORES */
 
-    TarjetaVacunacion();
+    TarjetaVacunacion() = default;
     TarjetaVacunacion(const TarjetaVacunacion& orig);
     virtual ~TarjetaVacunacion();
 
     /* METODOS */
 
     UTM getDomicilio();
+    void addDosis(Dosis *d);
     std::vector<Dosis*> getDosis();
     std::string pasaporteCovidCode(bool valido);
     Fabricante getDosisRecomendable();
+    int dosisPorAdministrar();
+
+    /* OPERADORES */
+
+    TarjetaVacunacion& operator=(const TarjetaVacunacion& right);
+    bool operator==(const TarjetaVacunacion& right) const;
 
     /* GETTERS Y SETTERS */
 
@@ -45,10 +52,8 @@ public:
     int GetIdCentroCercano() const;
     void SetPautaCompleta(bool pautaCompleta);
     bool IsPautaCompleta() const;
-    void SetId(int id);
-    int GetId() const;
-
-
+    void setId(std::string id);
+    std::string getId() const;
 
 };
 

@@ -1,7 +1,10 @@
 build/Debug/Cygwin-Windows/CentroVacunacion.o: CentroVacunacion.cpp \
- CentroVacunacion.h Usuario.h Dosis.h fecha.h GestionVacunas.h
+ GestionVacunas.h CentroVacunacion.h Usuario.h Dosis.h fecha.h \
+ TarjetaVacunacion.h THashTarjetaVacunacion.h
+GestionVacunas.h:
 CentroVacunacion.h:
 Usuario.h:
 Dosis.h:
 fecha.h:
-GestionVacunas.h:
+TarjetaVacunacion.h:
+THashTarjetaVacunacion.h:

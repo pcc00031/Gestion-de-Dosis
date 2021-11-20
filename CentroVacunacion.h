@@ -12,13 +12,14 @@
 #include <map>
 #include <list>
 #include "Usuario.h"
+#include "TarjetaVacunacion.h"
 
 class GestionVacunas; // para relacion circular
 
 class CentroVacunacion {
 private:
     multimap<std::string, Dosis> dosis;
-    list<Usuario*> usuarios;
+    list<TarjetaVacunacion*> tarjetas;
     int id = 0;
     UTM direccion;
     GestionVacunas *gv;
@@ -34,8 +35,8 @@ public:
 
     /* METODOS */
 
-    void anadirUsuarioLista(Usuario *u);
-    bool administrarDosis(Usuario *u, Fabricante fab);
+    void anadirTarjetaLista(TarjetaVacunacion *t);
+    bool administrarDosis(TarjetaVacunacion *t, Fabricante fab);
     void anadirNDosisAlmacen(vector<Dosis> &packDosis);
     int numVacunasTipo(Fabricante f);
     

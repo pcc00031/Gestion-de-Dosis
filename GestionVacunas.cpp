@@ -37,7 +37,7 @@ GestionVacunas::GestionVacunas(std::string nombreFichUsuarios, std::string nombr
  * @param orig
  */
 GestionVacunas::GestionVacunas(const GestionVacunas& orig) :
-usuarios(orig.usuarios), centros(orig.centros), listadoNSS(orig.listadoNSS), quedanVacunas(orig.quedanVacunas) {
+usuarios(orig.usuarios), centros(orig.centros), listadoNSS(orig.listadoNSS), tarjetas(orig.tarjetas), quedanVacunas(orig.quedanVacunas) {
 }
 
 /*
@@ -54,7 +54,7 @@ GestionVacunas::~GestionVacunas() {
  * @param nss
  * @return dicho usuario
  */
-Usuario * GestionVacunas::buscarUsuario(std::string nss) {
+Usuario* GestionVacunas::buscarUsuario(std::string nss) {
     return &usuarios.find(nss)->second;
 }
 
@@ -65,6 +65,23 @@ Usuario * GestionVacunas::buscarUsuario(std::string nss) {
  */
 CentroVacunacion* GestionVacunas::buscarCentro(int id) {
     return &centros.at(id - 1);
+}
+
+/**
+ * @brief Busca una tarjeta dado su id
+ * @param id
+ * @return 
+ */
+TarjetaVacunacion* GestionVacunas::buscarTarjeta(std::string id) {
+    return &tarjetas.find(id)->second;
+}
+
+//FIXME borrar cuando tabla hash
+
+void GestionVacunas::borrarTarjeta(std::string id) {
+    tarjetas.erase(id);
+//    std::cout << "Tarjeta " << id << " borrada" << std::endl
+//            << "Tarjetas tras borrado: " << tarjetas.size() << std::endl << std::endl;
 }
 
 /**
@@ -85,11 +102,11 @@ void GestionVacunas::actualizarUsuario(Usuario &u) {
  */
 int GestionVacunas::pautaCompleta() {
     int contador = 0;
-    map<string, Usuario>::iterator it;
-    for (it = usuarios.begin(); it != usuarios.end(); it++) {
-        if (it->second.edad() < 75 && it->second.getDosis().size() == 2)
+    map<string, TarjetaVacunacion>::iterator it;
+    for (it = tarjetas.begin(); it != tarjetas.end(); it++) {
+        if (it->second.GetTarjetaUsuario()->edad() < 75 && it->second.getDosis().size() == 2)
             contador++;
-        if (it->second.edad() > 75 && it->second.getDosis().size() == 3)
+        if (it->second.GetTarjetaUsuario()->edad() > 75 && it->second.getDosis().size() == 3)
             contador++;
     }
     return contador;
@@ -103,35 +120,27 @@ int GestionVacunas::pautaCompleta() {
  * @return numero de usuarios con pauta completa
  */
 int GestionVacunas::pautaCompletaRecomendable() {
-    int contador = 0;
+    int contador = 0; //FIXME corregir pautaCompletaRecomendable
     int cont = 0;
     Usuario *u;
-    for (int i = 0; i < listadoNSS.size(); i++) {
-        u = buscarUsuario(listadoNSS[i]);
-
+    map<std::string, TarjetaVacunacion>::iterator it;
+    it = tarjetas.begin();
+    while (it != tarjetas.end()) {
+        u = it->second.GetTarjetaUsuario();
         if (u->edad() < 13)
             cont++;
-        if (u->edad() < 75 && u->getDosis().size() == 2
-                && u->getDosis()[0]->GetFabricante() == u->getDosisRecomendable()
-                && u->getDosis()[1]->GetFabricante() == u->getDosisRecomendable()) {
+        if (u->edad() < 75 && it->second.getDosis().size() == 2
+                && it->second.getDosis()[0]->GetFabricante() == it->second.getDosisRecomendable()
+                && it->second.getDosis()[1]->GetFabricante() == it->second.getDosisRecomendable()) {
             contador++;
-            std::cout << *u
-                    << "- Dosis: " << endl
-                    << " - Primera dosis: " << endl << *u->getDosis()[0]
-                    << " - Segunda dosis: " << endl << *u->getDosis()[1] << endl;
         }
-        if (u->edad() > 75 && u->getDosis().size() == 3
-                && u->getDosis()[0]->GetFabricante() == u->getDosisRecomendable()
-                && u->getDosis()[1]->GetFabricante() == u->getDosisRecomendable()
-                && u->getDosis()[2]->GetFabricante() == u->getDosisRecomendable()) {
+        if (u->edad() > 75 && it->second.getDosis().size() == 3
+                && it->second.getDosis()[0]->GetFabricante() == it->second.getDosisRecomendable()
+                && it->second.getDosis()[1]->GetFabricante() == it->second.getDosisRecomendable()
+                && it->second.getDosis()[2]->GetFabricante() == it->second.getDosisRecomendable()) {
             contador++;
-            std::cout << *u
-                    << "- Dosis: " << endl
-                    << " - Primera dosis: " << endl << *u->getDosis()[0]
-                    << " - Segunda dosis: " << endl << *u->getDosis()[1]
-                    << " - Tercera dosis: " << endl << *u->getDosis()[2] << endl;
-
         }
+        ++it;
     }
     return contador;
 }
@@ -146,7 +155,6 @@ int GestionVacunas::numTotalVacunasTipo(Fabricante f) {
     for (int i = 0; i < centros.size(); i++) {
         total += centros[i].numVacunasTipo(f);
     }
-
     return total;
 }
 
@@ -157,22 +165,12 @@ int GestionVacunas::numTotalVacunasTipo(Fabricante f) {
  * @param u
  * @return CentroVacunacion donde se vacuna
  */
-CentroVacunacion * GestionVacunas::vacunarUsuario(Usuario *u) {
+CentroVacunacion * GestionVacunas::vacunarUsuario(TarjetaVacunacion * t) {
+    Usuario *u = t->GetTarjetaUsuario();
     CentroVacunacion *cv;
-    double menorDistancia, aux = 0;
-    // comprobacion del centro mas cercano al domicilio del usuario
-    menorDistancia = (u->GetDocimicilio().calcularDistancia(centros[0].getDireccion()));
-    cv = &centros[0];
-
-    for (int i = 1; i < centros.size(); i++) {
-        aux = u->GetDocimicilio().calcularDistancia(centros[i].getDireccion());
-        if (aux < menorDistancia) {
-            menorDistancia = aux;
-            cv = &centros[i];
-        }
-    }
-    cv->anadirUsuarioLista(u); // Damos de alta al usuario (de forma temporal)
-    cv->administrarDosis(u, u->getDosisRecomendable()); // Vacunamos
+    cv = buscarCentro(t->GetIdCentroCercano());
+    cv->anadirTarjetaLista(t); // Damos de alta al usuario (de forma temporal)
+    cv->administrarDosis(t, t->getDosisRecomendable()); // Vacunamos
     return cv;
 }
 
@@ -182,26 +180,26 @@ CentroVacunacion * GestionVacunas::vacunarUsuario(Usuario *u) {
  */
 vector<Usuario*> GestionVacunas::listadoVacunacionNR() {
     vector<Usuario*> VNR;
-    map<std::string, Usuario>::iterator it;
-    it = usuarios.begin();
-    while (it != usuarios.end()) {
+    map<std::string, TarjetaVacunacion>::iterator it;
+    it = tarjetas.begin();
+    while (it != tarjetas.end()) {
         // Detectamos usuarios con solo 1 vacuna administrada 
         if (it->second.getDosis().size() == 1 &&
                 it->second.getDosisRecomendable() != it->second.getDosis()[0]->GetFabricante())
-            VNR.push_back(&it->second);
+            VNR.push_back(it->second.GetTarjetaUsuario());
         // Detectamos usuarios con 2 vacunas administradas
         if (it->second.getDosis().size() == 2 && (
                 it->second.getDosisRecomendable() != it->second.getDosis()[0]->GetFabricante()
                 || it->second.getDosisRecomendable() != it->second.getDosis()[1]->GetFabricante()))
             // si alguna de las 2 es no recomendada, agregamos al listado
-            VNR.push_back(&it->second);
+            VNR.push_back(it->second.GetTarjetaUsuario());
         // Detectamos usuarios con 3 vacunas administradas
         if (it->second.getDosis().size() == 3 && (
                 it->second.getDosisRecomendable() != it->second.getDosis()[0]->GetFabricante()
                 || it->second.getDosisRecomendable() != it->second.getDosis()[1]->GetFabricante()
                 || it->second.getDosisRecomendable() != it->second.getDosis()[2]->GetFabricante()))
             // si alguna de las 3 es no recomendada, agregamos al listado
-            VNR.push_back(&it->second);
+            VNR.push_back(it->second.GetTarjetaUsuario());
         ++it;
     }
     return VNR;
@@ -397,24 +395,57 @@ vector<Dosis> GestionVacunas::cargarDosis(int numCentro, int numDosis) {
 }
 
 /**
+ * @brief Crea una tarjeta de vacunacion a cada usuario
+ */
+void GestionVacunas::cargarTarjetas(std::string id) {
+    TarjetaVacunacion t;
+    Usuario *u = buscarUsuario(id);
+
+    // asignamos id a la tarjeta
+    t.setId(id + "-" + u->GetNombre());
+    double menorDistancia, aux = 0;
+
+    // comprobamos centro mas cercano y asignamos id
+    menorDistancia = (u->GetDocimicilio().calcularDistancia(centros[0].getDireccion()));
+    int posCentro = 0;
+
+    for (int i = 1; i < centros.size(); i++) {
+        aux = u->GetDocimicilio().calcularDistancia(centros[i].getDireccion());
+        if (aux < menorDistancia) {
+            menorDistancia = aux;
+            posCentro = i;
+        }
+    }
+    t.SetIdCentroCercano(posCentro + 1);
+
+    // agregamos al usuario
+    t.SetTarjetaUsuario(u);
+
+    // agregamos tarjeta al gestor
+    this->tarjetas.insert(pair<std::string, TarjetaVacunacion>(t.getId(), t));
+
+    //std::cout << "Total tarjetas: " << tarjetas.size() << std::endl;
+}
+
+/**
  * @brief Muestra los primeros 'numMostrar' usuarios
  */
 void GestionVacunas::verUsuarios(int numMostrar) {
-    Usuario *u;
-    std::cout << " Total usuarios: " << usuarios.size() << endl;
-    for (int i = 0; i < numMostrar; i++) {
-        u = buscarUsuario(listadoNSS[i]);
-        std::cout << u;
-
-        std::cout << "- - Num dosis: " << u->getDosis().size() << endl;
-        if (u->getDosis().size() > 0) {
-            for (int i = 0; i < u->getDosis().size(); i++) {
-
-                cout << "- Dosis " << i + 1 << ": " << endl;
-                cout << *u->getDosis()[i] << endl;
-            }
-        }
-    }
+    //    Usuario *u;
+    //    std::cout << " Total usuarios: " << usuarios.size() << endl;
+    //    for (int i = 0; i < numMostrar; i++) {
+    //        u = buscarUsuario(listadoNSS[i]);
+    //        std::cout << u;
+    //
+    //        std::cout << "- - Num dosis: " << it->second.getDosis().size() << endl;
+    //        if (it->second.getDosis().size() > 0) {
+    //            for (int i = 0; i < it->second.getDosis().size(); i++) {
+    //
+    //                cout << "- Dosis " << i + 1 << ": " << endl;
+    //                cout << *it->second.getDosis()[i] << endl;
+    //            }
+    //        }
+    //    }
 }
 
 /* GETTERS Y SETTERS */
@@ -433,6 +464,7 @@ GestionVacunas & GestionVacunas::operator=(const GestionVacunas & right) {
     this->centros = right.centros;
     this->usuarios = right.usuarios;
     this->listadoNSS = right.listadoNSS;
+    this->tarjetas = right.tarjetas;
     this->quedanVacunas = right.quedanVacunas;
 
     return *this;
@@ -441,7 +473,8 @@ GestionVacunas & GestionVacunas::operator=(const GestionVacunas & right) {
 bool GestionVacunas::operator==(const GestionVacunas & right) const {
     if (this->centros == right.centros &&
             this->listadoNSS == right.listadoNSS &&
-            this->usuarios == right.usuarios) {
+            this->usuarios == right.usuarios &&
+            this->tarjetas == right.tarjetas) {
         return true;
     } else return false;
 }

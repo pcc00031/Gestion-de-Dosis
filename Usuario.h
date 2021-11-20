@@ -37,7 +37,6 @@ private:
     std::string NSS = " ";
     Fecha fechaNacimiento;
     UTM docimicilio;
-    vector<Dosis*> dosis;
 
 public:
     /* CONSTRUCTORES */
@@ -51,10 +50,6 @@ public:
     /* METODOS */
 
     int edad();
-    void addDosis(Dosis *d);
-    vector<Dosis*> getDosis();
-    Fabricante getDosisRecomendable();
-    int dosisPorAdministrar();
 
     /* OPERADORES*/
 

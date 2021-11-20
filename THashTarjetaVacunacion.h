@@ -20,15 +20,24 @@ public:
 
     /* METODOS */
 
-    bool insertar(unsigned long clave, TarjetaVacunacion &pal);
+    bool insertar(unsigned long clave, TarjetaVacunacion &pal); //TODO todo HASH
     bool buscar(unsigned long clave, std::string &id, TarjetaVacunacion &pal);
     bool borrar(unsigned long clave, std::string &id);
     unsigned int numPalabras();
+    void redispersar(unsigned tam);
+
+    /* METODOS DE PRUEBA */
+
+    unsigned int maxColisiones();
+    unsigned int numMax10();
+    unsigned int promedioColisiones();
+    float factorCarga();
+    unsigned int tamTabla();
 
     /* OPERADORES */
 
     THashTarjetaVacunacion& operator=(THashTarjetaVacunacion &thash);
-}
+};
 
 #endif /* THASHTARJETAVACUNACION_H */
 

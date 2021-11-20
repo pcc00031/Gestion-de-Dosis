@@ -10,6 +10,8 @@
 #define GESTIONVACUNAS_H
 
 #include "CentroVacunacion.h"
+#include "TarjetaVacunacion.h"
+#include "THashTarjetaVacunacion.h"
 #include <fstream>
 #include <algorithm>
 
@@ -18,6 +20,7 @@ private:
     map<std::string, Usuario> usuarios;
     vector<CentroVacunacion> centros;
     vector<string> listadoNSS;
+    map<std::string, TarjetaVacunacion> tarjetas;
 
     bool quedanVacunas = true; ///<  Indica si quedan dosis disponibles
     std::ifstream dosis; ///<  Guarda el estado del fichero de dosis
@@ -39,10 +42,12 @@ public:
     /* METODOS */
 
     Usuario* buscarUsuario(std::string nss);
+    TarjetaVacunacion* buscarTarjeta(std::string id);
+    void borrarTarjeta(std::string id);
     CentroVacunacion* buscarCentro(int id);
     void actualizarUsuario(Usuario &u);
     vector<string>& listadoCompletoNSS();
-    CentroVacunacion* vacunarUsuario(Usuario *u);
+    CentroVacunacion* vacunarUsuario(TarjetaVacunacion *t);
 
     int pautaCompleta();
     int pautaCompletaRecomendable();
@@ -50,11 +55,12 @@ public:
     void suministrarNDosisAlCentro(CentroVacunacion *centro, int nDosis);
     int numTotalVacunasTipo(Fabricante f);
 
-    /* METODOS DE CARGA DE FICHEROS*/
+    /* METODOS DE CARGA DE DATOS */
 
     void cargarUsuarios(std::string nombreFich);
     vector<Dosis> cargarDosis(int numCentro, int numDosis);
     void cargarCentros(std::string nombreFich);
+    void cargarTarjetas(std::string id);
 
     // Visualizado de usuarios
     void verUsuarios(int numMostrar);
