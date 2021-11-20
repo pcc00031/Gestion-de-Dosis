@@ -38,16 +38,16 @@ public:
 
     /* METODOS */
 
-    Usuario& buscarUsuario(std::string nss);
-    CentroVacunacion& buscarCentro(int id);
+    Usuario* buscarUsuario(std::string nss);
+    CentroVacunacion* buscarCentro(int id);
     void actualizarUsuario(Usuario &u);
-    vector<string> listadoCompletoNSS();
-    CentroVacunacion& vacunarUsuario(Usuario &u);
+    vector<string>& listadoCompletoNSS();
+    CentroVacunacion* vacunarUsuario(Usuario *u);
 
     int pautaCompleta();
     int pautaCompletaRecomendable();
     vector<Usuario*> listadoVacunacionNR();
-    void suministrarNDosisAlCentro(CentroVacunacion &centro, int nDosis);
+    void suministrarNDosisAlCentro(CentroVacunacion *centro, int nDosis);
     int numTotalVacunasTipo(Fabricante f);
 
     /* METODOS DE CARGA DE FICHEROS*/

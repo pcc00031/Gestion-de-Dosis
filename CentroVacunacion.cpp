@@ -29,8 +29,8 @@ CentroVacunacion::~CentroVacunacion() {
  * @brief Agrega un usuario a la lista del centro
  * @param u
  */
-void CentroVacunacion::anadirUsuarioLista(Usuario &u) {
-    usuarios.push_back(&u);
+void CentroVacunacion::anadirUsuarioLista(Usuario *u) {
+    usuarios.push_back(u);
 }
 
 /**
@@ -42,15 +42,15 @@ void CentroVacunacion::anadirUsuarioLista(Usuario &u) {
  * @return true: si la dosis es compatible con el usuario
  * false: si no es compatible
  */
-bool CentroVacunacion::administrarDosis(Usuario &u, Fabricante fab) {
+bool CentroVacunacion::administrarDosis(Usuario *u, Fabricante fab) {
 
-    // En primer lugar comprobamos que el usuario se ha agregadoa a la lista
+    // En primer lugar comprobamos que el usuario se ha agregado a la lista
     // Al solo existir uno durante el proceso de vacunacion, siempre estara el primero
-    if (this->usuarios.front() != &u) {
+    if (this->usuarios.front() != u) {
         return false;
     }
     // Si es menor de 13 anios o tiene ya 3 dosis no se suministra ninguna dosis
-    if (u.edad() < 13 || u.getDosis().size() >= 3) {
+    if (u->edad() < 13 || u->getDosis().size() >= 3) {
         return false;
         // En otro caso, realizamos el proceso de vacunacion normal
     } else {
@@ -58,9 +58,10 @@ bool CentroVacunacion::administrarDosis(Usuario &u, Fabricante fab) {
         it = dosis.begin();
         while (it != dosis.end()) {
             if (it->second.GetFabricante() == fab && it->second.getEstado() == Estado::enAlmacen) {
-                u.addDosis(&it->second);
+                u->addDosis(&it->second);
                 it->second.setEstado(Estado::administrada);
-                this->usuarios.pop_front(); // borramos al usuario de la lista              
+                this->usuarios.pop_front(); // borramos al usuario de la lista      
+                std::cout << "vacunado: " << u->GetNSS() << " en centro: " << this->id << std::endl;
                 return true;
             }
             ++it;
@@ -69,20 +70,22 @@ bool CentroVacunacion::administrarDosis(Usuario &u, Fabricante fab) {
         it = dosis.begin();
         while (it != dosis.end()) {
             if (it->second.getEstado() == Estado::enAlmacen) {
-                u.addDosis(&it->second);
+                u->addDosis(&it->second);
                 it->second.setEstado(Estado::administrada);
-                this->usuarios.pop_front(); // borramos al usuario de la lista              
+                this->usuarios.pop_front(); // borramos al usuario de la lista  
+                std::cout << "vacunado: " << u->GetNSS() << " en centro: " << this->id << std::endl;
                 return false;
             }
             ++it;
         }
         // Si no quedan dosis de ningun tipo en el almacen, salta la alarma
         if (gv->isQuedanVacunas()) {
-            alarmaFaltaDosis(u.getDosisRecomendable());
+            alarmaFaltaDosis(u->getDosisRecomendable());
             it = dosis.begin();
+            bool nuevasDosis = false;
             while (it != dosis.end()) { // comprobamos si el centro ha recibido dosis nuevas
                 if (it->second.getEstado() == Estado::enAlmacen) {
-                    administrarDosis(u, u.getDosisRecomendable());
+                    administrarDosis(u, u->getDosisRecomendable());
                 }
                 ++it;
             }
@@ -115,7 +118,7 @@ int CentroVacunacion::numVacunasTipo(Fabricante f) {
 /**
  * @brief Recibe 100 nuevas dosis
  */
-void CentroVacunacion::anadirNDosisAlmacen(vector<Dosis> packDosis) {
+void CentroVacunacion::anadirNDosisAlmacen(vector<Dosis> &packDosis) {
     for (int i = 0; i < packDosis.size(); i++) {
         this->dosis.insert(pair<std::string, Dosis>(packDosis[i].fabToString(packDosis[i].GetFabricante()), packDosis[i]));
     }
@@ -128,7 +131,7 @@ void CentroVacunacion::anadirNDosisAlmacen(vector<Dosis> packDosis) {
  */
 void CentroVacunacion::alarmaFaltaDosis(Fabricante f) {
     std::cout << "- ALARMA: no quedan dosis de " << f << " en el centro " << this->id << std::endl;
-    gv->suministrarNDosisAlCentro(*this, 100);
+    gv->suministrarNDosisAlCentro(this, 100);
 }
 
 /**

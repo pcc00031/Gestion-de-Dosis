@@ -34,9 +34,9 @@ public:
 
     /* METODOS */
 
-    void anadirUsuarioLista(Usuario &u);
-    bool administrarDosis(Usuario &u, Fabricante fab);
-    void anadirNDosisAlmacen(vector<Dosis> packDosis);
+    void anadirUsuarioLista(Usuario *u);
+    bool administrarDosis(Usuario *u, Fabricante fab);
+    void anadirNDosisAlmacen(vector<Dosis> &packDosis);
     int numVacunasTipo(Fabricante f);
     
     int verDosisRestantes(); // metodo auxiliar de comprobacion

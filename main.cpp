@@ -44,13 +44,13 @@ int main() {
 
         // Vacunar a todos los usuarios cuyo NSS sea par 
 
-        Usuario *u; //FIXME lo hago asi?
+        Usuario *u = new Usuario(); //FIXME lo hago asi?
         vector<string> listadoNSS = gv.listadoCompletoNSS();
         for (int i = 0; i < listadoNSS.size(); i++) {
             if (listadoNSS[i].back() % 2 == 0) { // comprobacion par
-                u = &gv.buscarUsuario(listadoNSS[i]);
-                if (u->GetNombre() != " ") {
-                    gv.vacunarUsuario(*u);
+                u = gv.buscarUsuario(listadoNSS[i]);
+                if (u != nullptr) {
+                    gv.vacunarUsuario(u);
                     //gv.actualizarUsuario(u); //FIXME cambiar
                 }
             }
@@ -71,11 +71,12 @@ int main() {
                 "-------------------------------------------------------------------------------" << endl << endl;
 
         // Vacunar a todos los usuarios con más de 65 años.
-
+        
         for (int i = 0; i < listadoNSS.size(); i++) {
-            u = &gv.buscarUsuario(listadoNSS[i]);
-            if (u->GetNombre() != " " && u->edad() > 65) {
-                gv.vacunarUsuario(*u);
+            u = gv.buscarUsuario(listadoNSS[i]);
+
+            if (u != nullptr && u->edad() > 65) {
+                gv.vacunarUsuario(u);
                 //gv.actualizarUsuario(u);
             }
         }
@@ -100,9 +101,9 @@ int main() {
 
         CentroVacunacion cv;
         for (int i = 0; i < listadoNSS.size(); i++) {
-            u = &gv.buscarUsuario(listadoNSS[i]);
-            if (u->GetNombre() == "Eva") {
-                cv = gv.buscarCentro(gv.vacunarUsuario(*u).getId());
+            u = gv.buscarUsuario(listadoNSS[i]);
+            if (u != nullptr && u->GetNombre() == "Eva") {
+                cv = gv.buscarCentro(gv.vacunarUsuario(u).getId());
                 cout << "CENTRO DE VACUNACION: " << cv.getId() << endl
                         << "- Direccion: " << endl << cv.getDireccion()
                         << endl << "DATOS VACUNADO:" << endl;
@@ -138,7 +139,7 @@ int main() {
         cout << "Usuarios con pauta completa no recomendable: " << gv.pautaCompleta() << endl << endl;
         cout << "-------------------------------------------------------------------------------"
                 "-------------------------------------------------------------------------------" << endl << endl;
-        
+
     } catch (std::exception &e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }

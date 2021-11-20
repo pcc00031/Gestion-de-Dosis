@@ -38,6 +38,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/CentroVacunacion.o \
 	${OBJECTDIR}/Dosis.o \
 	${OBJECTDIR}/GestionVacunas.o \
+	${OBJECTDIR}/THashTarjetaVacunacion.o \
+	${OBJECTDIR}/TarjetaVacunacion.o \
 	${OBJECTDIR}/Usuario.o \
 	${OBJECTDIR}/fecha.o \
 	${OBJECTDIR}/main.o
@@ -61,11 +63,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pr4.exe
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pr5.exe
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pr4.exe: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pr5.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pr4 ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pr5 ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/CentroVacunacion.o: CentroVacunacion.cpp
 	${MKDIR} -p ${OBJECTDIR}
@@ -81,6 +83,16 @@ ${OBJECTDIR}/GestionVacunas.o: GestionVacunas.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GestionVacunas.o GestionVacunas.cpp
+
+${OBJECTDIR}/THashTarjetaVacunacion.o: THashTarjetaVacunacion.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/THashTarjetaVacunacion.o THashTarjetaVacunacion.cpp
+
+${OBJECTDIR}/TarjetaVacunacion.o: TarjetaVacunacion.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TarjetaVacunacion.o TarjetaVacunacion.cpp
 
 ${OBJECTDIR}/Usuario.o: Usuario.cpp
 	${MKDIR} -p ${OBJECTDIR}

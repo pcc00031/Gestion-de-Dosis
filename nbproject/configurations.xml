@@ -4,16 +4,12 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>AVL.h</itemPath>
       <itemPath>CentroVacunacion.h</itemPath>
       <itemPath>Dosis.h</itemPath>
       <itemPath>GestionVacunas.h</itemPath>
-      <itemPath>Iterador.h</itemPath>
-      <itemPath>ListaEnlazada.h</itemPath>
-      <itemPath>Nodo.h</itemPath>
-      <itemPath>NodoL.h</itemPath>
+      <itemPath>THashTarjetaVacunacion.h</itemPath>
+      <itemPath>TarjetaVacunacion.h</itemPath>
       <itemPath>Usuario.h</itemPath>
-      <itemPath>VDinamico.h</itemPath>
       <itemPath>fecha.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -26,6 +22,8 @@
       <itemPath>CentroVacunacion.cpp</itemPath>
       <itemPath>Dosis.cpp</itemPath>
       <itemPath>GestionVacunas.cpp</itemPath>
+      <itemPath>THashTarjetaVacunacion.cpp</itemPath>
+      <itemPath>TarjetaVacunacion.cpp</itemPath>
       <itemPath>Usuario.cpp</itemPath>
       <itemPath>fecha.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
@@ -56,8 +54,6 @@
       </toolsSet>
       <compileType>
       </compileType>
-      <item path="AVL.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="CentroVacunacion.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CentroVacunacion.h" ex="false" tool="3" flavor2="0">
@@ -70,19 +66,17 @@
       </item>
       <item path="GestionVacunas.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Iterador.h" ex="false" tool="3" flavor2="0">
+      <item path="THashTarjetaVacunacion.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="ListaEnlazada.h" ex="false" tool="3" flavor2="0">
+      <item path="THashTarjetaVacunacion.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Nodo.h" ex="false" tool="3" flavor2="0">
+      <item path="TarjetaVacunacion.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="NodoL.h" ex="false" tool="3" flavor2="0">
+      <item path="TarjetaVacunacion.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Usuario.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Usuario.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="VDinamico.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="fecha.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -111,8 +105,6 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="AVL.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="CentroVacunacion.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CentroVacunacion.h" ex="false" tool="3" flavor2="0">
@@ -125,19 +117,17 @@
       </item>
       <item path="GestionVacunas.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Iterador.h" ex="false" tool="3" flavor2="0">
+      <item path="THashTarjetaVacunacion.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="ListaEnlazada.h" ex="false" tool="3" flavor2="0">
+      <item path="THashTarjetaVacunacion.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Nodo.h" ex="false" tool="3" flavor2="0">
+      <item path="TarjetaVacunacion.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="NodoL.h" ex="false" tool="3" flavor2="0">
+      <item path="TarjetaVacunacion.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Usuario.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Usuario.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="VDinamico.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="fecha.cpp" ex="false" tool="1" flavor2="0">
       </item>
