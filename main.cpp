@@ -24,10 +24,55 @@ int main() {
                 // PROGRAMA DE ENTRENAMIENTO
             case 1:
             {
+                GestionVacunas gv;
+                THashTarjetaVacunacion tabla1(15383);
+                THashTarjetaVacunacion tabla2(15383);
+                THashTarjetaVacunacion tabla3(15383);
 
+                vector<string> listadoNSS = gv.listadoCompletoNSS();
+                Usuario *u;
+                for (int i = 0; i < listadoNSS.size(); i++) {
+                    TarjetaVacunacion t;
+                    u = gv.buscarUsuario(listadoNSS[i]);
+                    t.setId(u->GetNSS() + "-" + u->GetNombre());
+                    tabla1.insertar1(stol(u->GetNSS()), t);
+                    tabla2.insertar2(stol(u->GetNSS()), t);
+                    tabla3.insertar3(stol(u->GetNSS()), t);
+                }
+                cout << "factor carga 1: " << tabla1.factorCarga() << endl;
+                cout << "colisiones 1: " << tabla1.maxColisiones() << endl;
 
+                cout << "factor carga 2: " << tabla2.factorCarga() << endl;
+                cout << "colisiones 2: " << tabla2.maxColisiones() << endl;
+
+                cout << "factor carga 3: " << tabla3.factorCarga() << endl;
+                cout << "colisiones 3: " << tabla3.maxColisiones() << endl;
+
+                THashTarjetaVacunacion tabla4(14713);
+                THashTarjetaVacunacion tabla5(14713);
+                THashTarjetaVacunacion tabla6(14713);
+
+                for (int i = 0; i < listadoNSS.size(); i++) {
+                    TarjetaVacunacion t;
+                    u = gv.buscarUsuario(listadoNSS[i]);
+                    t.setId(u->GetNSS() + "-" + u->GetNombre());
+                    tabla4.insertar1(stol(u->GetNSS()), t);
+                    tabla5.insertar2(stol(u->GetNSS()), t);
+                    tabla6.insertar3(stol(u->GetNSS()), t);
+
+                }
+
+                cout << "factor carga 4: " << tabla4.factorCarga() << endl;
+                cout << "colisiones 4: " << tabla4.maxColisiones() << endl;
+
+                cout << "factor carga 5: " << tabla5.factorCarga() << endl;
+                cout << "colisiones 5: " << tabla5.maxColisiones() << endl;
+
+                cout << "factor carga 6: " << tabla6.factorCarga() << endl;
+                cout << "colisiones 6: " << tabla6.maxColisiones() << endl;
             }
-
+                break;
+                
                 // RESOLUCION PRACTICA 5
             default:
             case 2:

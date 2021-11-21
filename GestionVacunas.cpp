@@ -120,7 +120,7 @@ int GestionVacunas::pautaCompleta() {
  * @return numero de usuarios con pauta completa
  */
 int GestionVacunas::pautaCompletaRecomendable() {
-    int contador = 0; //FIXME corregir pautaCompletaRecomendable
+    int contador = 0;
     int cont = 0;
     Usuario *u;
     map<std::string, TarjetaVacunacion>::iterator it;
