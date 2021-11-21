@@ -5,11 +5,12 @@
  */
 
 #include "GestionVacunas.h"
+#include "excepciones/UsuarioNoEncontrado.h"
+#include "excepciones/NoQuedanDosis.h"
+#include "excepciones/TarjetaNoAgregada.h"
+#include "excepciones/DosisNoSuministradas.h"
 
 /* CONSTRUCTORES */
-
-CentroVacunacion::CentroVacunacion() {
-}
 
 CentroVacunacion::CentroVacunacion(int id, UTM direccion) :
 id(id), direccion(direccion) {
@@ -30,6 +31,9 @@ CentroVacunacion::~CentroVacunacion() {
  */
 void CentroVacunacion::anadirTarjetaLista(TarjetaVacunacion *t) {
     tarjetas.push_front(t);
+    if (tarjetas.front()->getId() != t->getId()) {
+        throw TarjetaNoAgregada();
+    }
 }
 
 /**
@@ -41,75 +45,66 @@ void CentroVacunacion::anadirTarjetaLista(TarjetaVacunacion *t) {
  * @return true: si la dosis es compatible con el usuario
  * false: si no es compatible
  */
-
 bool CentroVacunacion::administrarDosis(TarjetaVacunacion *t, Fabricante fab) {
     Usuario *u = t->GetTarjetaUsuario();
-    //FIXME pasaporte covid?
-    if (u == nullptr) // comprobacion previa
-        return false;
 
     // En primer lugar comprobamos que el usuario se ha agregado a la lista
-    if (tarjetas.front() != t)
+    if (u == nullptr || tarjetas.front() != t)
+        throw UsuarioNoEncontrado();
+
+    // Si es menor de 13 anios o ya tiene pauta completa
+    if (u->edad() < 13 || t->dosisPorAdministrar() == 0)
         return false;
 
-    // Si es menor de 13 anios o tiene ya 3 dosis no se suministra ninguna dosis
-    if (u->edad() < 13 || t->getDosis().size() >= 3) {
-        return false;
-        // En otro caso, realizamos el proceso de vacunacion normal
-    } else {
-        multimap<std::string, Dosis>::iterator it;
-        it = dosis.begin();
-        while (it != dosis.end()) {
-            if (it->second.GetFabricante() == fab && it->second.getEstado() == Estado::enAlmacen) {
-                t->addDosis(&it->second);
-                it->second.setEstado(Estado::administrada);
-                this->tarjetas.pop_front(); // borramos al usuario de la lista      
-                //std::cout << "vacunado: " << u->GetNSS() << " en centro: " << this->id << std::endl;
+    // comprobamos que existan dosis en el almacen
+    if (verDosisRestantes() == 0) {
+        if (!gv->isQuedanVacunas())
+            throw NoQuedanDosis();
+        alarmaFaltaDosis(t->getDosisRecomendable()); // si no existen y quedan vacunas por leer, salta alarma
+        gv->vacunarUsuario(t); // intentamos vacunar de nuevo //FIXME se hace asi?
+    }
+
+    // En otro caso, realizamos el proceso de vacunacion normal  
+    multimap<std::string, Dosis>::iterator it;
+    it = dosis.begin();
+    while (it != dosis.end()) {
+        if (it->second.GetFabricante() == fab && it->second.getEstado() == Estado::enAlmacen) {
+            t->addDosis(&it->second);
+            it->second.setEstado(Estado::administrada);
+            this->tarjetas.pop_front(); // borramos al usuario de la lista      
+            //std::cout << "vacunado: " << u->GetNSS() << " en centro: " << this->id << std::endl;
+
+            // Generacion pasaporte //FIXME hacemos aqui?
+            if (t->dosisPorAdministrar() != 0) {
+                t->pasaporteCovidCode(false);
                 return true;
             }
-            ++it;
+            t->pasaporteCovidCode(true);
+            return true;
         }
-        // Si no encontramos dosis compatibles, administramos la primera que encontremos en almacen
-        it = dosis.begin();
-        while (it != dosis.end()) {
-            if (it->second.getEstado() == Estado::enAlmacen) {
-                t->addDosis(&it->second);
-                it->second.setEstado(Estado::administrada);
-                this->tarjetas.pop_front(); // borramos al usuario de la lista  
-                //std::cout << "vacunado: " << u->GetNSS() << " en centro: " << this->id << std::endl;
+        ++it;
+    }
+
+    // Si no encontramos dosis compatibles, administramos la primera que encontremos en almacen
+    it = dosis.begin();
+    while (it != dosis.end()) {
+        if (it->second.getEstado() == Estado::enAlmacen) {
+            t->addDosis(&it->second);
+            it->second.setEstado(Estado::administrada);
+            this->tarjetas.pop_front(); // borramos al usuario de la lista  
+            //std::cout << "vacunado: " << u->GetNSS() << " en centro: " << this->id << std::endl;
+
+            // Generacion pasaporte
+            if (t->dosisPorAdministrar() != 0) {
+                t->pasaporteCovidCode(false);
                 return false;
             }
-            ++it;
+            t->pasaporteCovidCode(true);
+            return false;
         }
-        // Si no quedan dosis de ningun tipo en el almacen, salta la alarma
-        if (gv->isQuedanVacunas()) {
-            alarmaFaltaDosis(t->getDosisRecomendable());
-            //            it = dosis.begin();
-            //            bool nuevasDosis = false;
-            //            while (it != dosis.end()) { // comprobamos si el centro ha recibido dosis nuevas
-            //                if (it->second.getEstado() == Estado::enAlmacen) {
-            //                    nuevasDosis == true;
-            //                }
-            //                ++it;
-            //            }
-            //            if(nuevasDosis)
-            //                administrarDosis(u, u->getDosisRecomendable());
-        }
-        it = dosis.begin();
-        int cont = 0;
-        while (it != dosis.end()) { // comprobamos si el centro ha recibido dosis nuevas
-            if (it->second.getEstado() == Estado::enAlmacen) {
-                cont++;
-            }
-            ++it;
-        }
-        //        std::cout << "mira: " << cont << std::endl;
-        //        administrarDosis(u, u->getDosisRecomendable());
-        return false;
+        ++it;
     }
-    // problema de nuestra implementacion: 
-    // realizamos hasta 3 bucles para comprobar si hay dosis en almacen
-    // ventaja: estan todas las situaciones controladas
+    return false;
 }
 
 /**
@@ -134,9 +129,12 @@ int CentroVacunacion::numVacunasTipo(Fabricante f) {
  * @brief Recibe 100 nuevas dosis
  */
 void CentroVacunacion::anadirNDosisAlmacen(vector<Dosis> &packDosis) {
+    long unsigned int tamDosis = dosis.size();
     for (int i = 0; i < packDosis.size(); i++) {
         this->dosis.insert(pair<std::string, Dosis>(packDosis[i].fabToString(packDosis[i].GetFabricante()), packDosis[i]));
     }
+    if (tamDosis + packDosis.size() != dosis.size())
+        throw DosisNoSuministradas();
     std::cout << " - Dosis suministradas en centro " << this->id << ": " << packDosis.size() << std::endl;
 }
 
@@ -204,6 +202,6 @@ void CentroVacunacion::setId(int id) {
     this->id = id;
 }
 
-void CentroVacunacion::setGv(GestionVacunas* gv) {
+void CentroVacunacion::setGv(GestionVacunas * gv) {
     this->gv = gv;
 }

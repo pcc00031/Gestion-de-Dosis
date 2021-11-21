@@ -11,9 +11,6 @@ UTM::UTM(double _lat, double _long) :
 latitud(_lat), longitud(_long) {
 }
 
-Usuario::Usuario() {
-}
-
 Usuario::Usuario(std::string NSS) :
 NSS(NSS) {
 }

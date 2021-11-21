@@ -5,6 +5,10 @@
  */
 
 #include "GestionVacunas.h"
+#include "excepciones/UsuarioNoEncontrado.h"
+#include "excepciones/CentroNoEncontrado.h"
+#include "excepciones/TarjetaNoEncontrada.h"
+#include "excepciones/DosisNoSuministradas.h"
 
 /* CONSTRUCTORES */
 
@@ -55,7 +59,10 @@ GestionVacunas::~GestionVacunas() {
  * @return dicho usuario
  */
 Usuario* GestionVacunas::buscarUsuario(std::string nss) {
-    return &usuarios.find(nss)->second;
+    Usuario *u = &usuarios.find(nss)->second;
+    if (u->GetNSS() != nss)
+        throw UsuarioNoEncontrado();
+    return u;
 }
 
 /**
@@ -64,7 +71,10 @@ Usuario* GestionVacunas::buscarUsuario(std::string nss) {
  * @return dicho centro
  */
 CentroVacunacion* GestionVacunas::buscarCentro(int id) {
-    return &centros.at(id - 1);
+    CentroVacunacion *cv = &centros.at(id - 1);
+    if (cv->getId() != id)
+        throw CentroNoEncontrado();
+    return cv;
 }
 
 /**
@@ -73,24 +83,20 @@ CentroVacunacion* GestionVacunas::buscarCentro(int id) {
  * @return 
  */
 TarjetaVacunacion* GestionVacunas::buscarTarjeta(std::string id) {
-    return &tarjetas.find(id)->second;
+    TarjetaVacunacion *t = &tarjetas.find(id)->second;
+    if (t->getId() != id) {
+        //std::cerr << "Tarjeta no encontrada" << std::endl;
+        //throw TarjetaNoEncontrada(); //FIXME que hago
+    }
+    return t;
 }
 
-//FIXME borrar cuando tabla hash
+//FIXME cambiar cuando tabla hash
 
 void GestionVacunas::borrarTarjeta(std::string id) {
     tarjetas.erase(id);
-//    std::cout << "Tarjeta " << id << " borrada" << std::endl
-//            << "Tarjetas tras borrado: " << tarjetas.size() << std::endl << std::endl;
-}
-
-/**
- * @brief Actualizacion de los datos de un usuario
- * @param u
- * @return 
- */
-void GestionVacunas::actualizarUsuario(Usuario &u) {
-    usuarios.find(u.GetNSS())->second = u;
+    //    std::cout << "Tarjeta " << id << " borrada" << std::endl
+    //            << "Tarjetas tras borrado: " << tarjetas.size() << std::endl << std::endl;
 }
 
 /**
@@ -143,6 +149,22 @@ int GestionVacunas::pautaCompletaRecomendable() {
         ++it;
     }
     return contador;
+}
+
+/**
+ * @brief usuarios con pasaporte covid
+ * @return 
+ */
+int GestionVacunas::pasaporteCovid() {
+    int cont = 0; //FIXME hago asi o con atributo string pasaporte?
+    map<std::string, TarjetaVacunacion>::iterator it;
+    it = tarjetas.begin();
+    while (it != tarjetas.end()) {
+        if (it->second.dosisPorAdministrar() == 0)
+            cont++;
+        ++it;
+    }
+    return cont;
 }
 
 /**
@@ -345,7 +367,7 @@ vector<Dosis> GestionVacunas::cargarDosis(int numCentro, int numDosis) {
     int mes = 0;
     int anno = 0;
 
-    while (getline(dosis, palabra)) {
+    while (getline(dosis, palabra) && cont != numDosis) {
         Dosis d;
 
         corte = palabra.find(';');
@@ -386,12 +408,11 @@ vector<Dosis> GestionVacunas::cargarDosis(int numCentro, int numDosis) {
         if (cont < numDosis) {
             aux.push_back(d);
             cont++;
-        }
-        // Cargamos en el centro
-        if (cont == numDosis) { //FIXME controlar en el while
-            return aux;
+            if (aux.back().GetId() != d.GetId())
+                throw DosisNoSuministradas();
         }
     }
+    return aux;
 }
 
 /**

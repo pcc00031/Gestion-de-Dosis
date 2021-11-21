@@ -41,7 +41,7 @@ private:
 public:
     /* CONSTRUCTORES */
 
-    Usuario();
+    Usuario() = default;
     Usuario(std::string NSS);
     Usuario(std::string nombre, std::string apellidos, std::string NSS, Fecha fechaNacimiento, UTM docimicilio);
     Usuario(const Usuario& orig);

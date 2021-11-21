@@ -28,7 +28,7 @@ private:
 public:
     /* CONSTRUCTORES */
 
-    CentroVacunacion();
+    CentroVacunacion() = default;
     CentroVacunacion(int id, UTM direccion);
     CentroVacunacion(const CentroVacunacion& orig);
     virtual ~CentroVacunacion();
@@ -39,7 +39,7 @@ public:
     bool administrarDosis(TarjetaVacunacion *t, Fabricante fab);
     void anadirNDosisAlmacen(vector<Dosis> &packDosis);
     int numVacunasTipo(Fabricante f);
-    
+
     int verDosisRestantes(); // metodo auxiliar de comprobacion
 
     /* OPERADORES */

@@ -10,7 +10,6 @@
 #define TARJETAVACUNACION_H
 
 #include <vector>
-
 #include "Dosis.h"
 #include "Usuario.h"
 
@@ -19,6 +18,7 @@ private:
     std::string id = "";
     bool pautaCompleta = false;
     int idCentroCercano = 0;
+    //std::string pasaporte = "";
     std::vector<Dosis*> dosisAdministradas;
     Usuario *tarjetaUsuario;
 
@@ -54,6 +54,7 @@ public:
     bool IsPautaCompleta() const;
     void setId(std::string id);
     std::string getId() const;
+   // std::string getPasaporte() const;
 
 };
 

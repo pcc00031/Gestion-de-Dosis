@@ -13,14 +13,11 @@ THashTarjetaVacunacion::THashTarjetaVacunacion() {
 
 THashTarjetaVacunacion::THashTarjetaVacunacion(int tamTabla) :
 tabla(tamTabla, ListaTarjetas()) {
-
 }
 
 THashTarjetaVacunacion::THashTarjetaVacunacion(const THashTarjetaVacunacion& orig) :
-tamTabla1(orig.tamTabla1),
-colisiones1(orig.colisiones1),
-colisiones2(orig.colisiones2),
-colisiones3(orig.colisiones3) { //FIXME Terminar Constructor copia{
+tamTabla(orig.tamTabla), colisiones(orig.colisiones), contadorIntentos(orig.contadorIntentos), intentos(orig.intentos),
+medCol(orig.medCol), tabla(orig.tabla) {
 }
 
 THashTarjetaVacunacion::~THashTarjetaVacunacion() {
@@ -29,7 +26,12 @@ THashTarjetaVacunacion::~THashTarjetaVacunacion() {
 
 /* METODOS DE ENTRENAMIENTO */
 
-
+/**
+ * @brief Funcion Hash1 - dispersion doble
+ * @param str
+ * @param intento
+ * @return 
+ */
 unsigned long THashTarjetaVacunacion::hash1(unsigned long str, int intento) {
 
     unsigned long int hash;
@@ -45,7 +47,13 @@ unsigned long THashTarjetaVacunacion::hash1(unsigned long str, int intento) {
     return ((hash + intento) * (hash2 % 14293)) % tabla.size();
 };
 
-unsigned long THashTarjetaVacunacion::hash20(unsigned long str, int intento) {
+/**
+ * @brief Funcion Hash2 - dispersion doble
+ * @param str
+ * @param intento
+ * @return 
+ */
+unsigned long THashTarjetaVacunacion::hash2(unsigned long str, int intento) {
 
     unsigned long int hash;
     hash = 5381;
@@ -55,7 +63,13 @@ unsigned long THashTarjetaVacunacion::hash20(unsigned long str, int intento) {
     return (hash + (intento * intento)) % tabla.size();
 }
 
-unsigned long THashTarjetaVacunacion::hash30(unsigned long str, int intento) {
+/**
+ * @brief Funcion Hash3 - dispersion cuadratica
+ * @param str
+ * @param intento
+ * @return 
+ */
+unsigned long THashTarjetaVacunacion::hash3(unsigned long str, int intento) {
 
     unsigned long int hash;
     unsigned long int hash2;
@@ -72,49 +86,75 @@ unsigned long THashTarjetaVacunacion::hash30(unsigned long str, int intento) {
 
 /* METODOS */
 
-//TODO doxygen
-
+/**
+ * @brief Inserta una tarjeta no repetida en la tabla
+ * siguiendo la funcion Hash1
+ * @param clave
+ * @param t
+ * @return 
+ */
 bool THashTarjetaVacunacion::insertar1(unsigned long clave, TarjetaVacunacion &t) {
     for (int intento = 0; intento < 10; intento++) {
 
         if (tabla[hash1(clave, intento)].size() <= 3) {
             tabla[hash1(clave, intento)].push_back(t);
-            contadorIntentos1 = intento;
-            intentos1.push_back(contadorIntentos1);
+            contadorIntentos = intento;
+            intentos.push_back(contadorIntentos);
             return true;
         } else
-            colisiones1++;
+            colisiones++;
     }
 }
 
+/**
+ * @brief Inserta una tarjeta no repetida en la tabla
+ * siguiendo la funcion Hash2
+ * @param clave
+ * @param t
+ * @return 
+ */
 bool THashTarjetaVacunacion::insertar2(unsigned long clave, TarjetaVacunacion &t) {
     for (int intento = 0; intento < 10; intento++) {
 
-        if (tabla[hash20(clave, intento)].size() <= 3) {
-            tabla[hash20(clave, intento)].push_back(t);
-            contadorIntentos1 = intento;
-            intentos1.push_back(contadorIntentos1);
+        if (tabla[hash2(clave, intento)].size() <= 3) {
+            tabla[hash2(clave, intento)].push_back(t);
+            contadorIntentos = intento;
+            intentos.push_back(contadorIntentos);
             return true;
         } else
-            colisiones1++;
+            colisiones++;
     }
 }
 
+/**
+ * @brief Inserta una tarjeta no repetida en la tabla
+ * siguiendo la funcion Hash3
+ * @param clave
+ * @param t
+ * @return 
+ */
 bool THashTarjetaVacunacion::insertar3(unsigned long clave, TarjetaVacunacion &t) {
     for (int intento = 0; intento < 10; intento++) {
 
-        if (tabla[hash30(clave, intento)].size() <= 3) {
-            tabla[hash30(clave, intento)].push_back(t);
-            contadorIntentos1 = intento;
-            intentos1.push_back(contadorIntentos1);
+        if (tabla[hash3(clave, intento)].size() <= 3) {
+            tabla[hash3(clave, intento)].push_back(t);
+            contadorIntentos = intento;
+            intentos.push_back(contadorIntentos);
             return true;
         } else
-            colisiones1++;
+            colisiones++;
     }
 }
 
 //TODO comprobar todo de la tabla hash
 
+/**
+ * @brief Busca un elemento en la tabla
+ * @param clave
+ * @param id
+ * @param t
+ * @return 
+ */
 bool THashTarjetaVacunacion::buscar(unsigned long clave, std::string &id, TarjetaVacunacion &t) {
     //FIXME Si tiene marca de borrado, pasar al siguiente
     //FIXME adaptar a tarjta
@@ -134,6 +174,12 @@ bool THashTarjetaVacunacion::buscar(unsigned long clave, std::string &id, Tarjet
     return false;
 }
 
+/**
+ * @brief Borra un elemento de la tabla
+ * @param clave
+ * @param id
+ * @return 
+ */
 bool THashTarjetaVacunacion::borrar(unsigned long clave, std::string &id) {
     //FIXME Aplicar marca de borrado
     //FIXME adaptar a tarjta
@@ -148,10 +194,6 @@ bool THashTarjetaVacunacion::borrar(unsigned long clave, std::string &id) {
     //        ++il;
     //    }
     return false;
-}
-
-unsigned int THashTarjetaVacunacion::numPalabras() {
-
 }
 
 /**
@@ -194,7 +236,7 @@ void THashTarjetaVacunacion::redispersar(unsigned tam) {
  * @return 
  */
 unsigned int THashTarjetaVacunacion::maxColisiones() {
-    return this->colisiones1;
+    return this->colisiones;
 }
 
 /**
@@ -204,6 +246,7 @@ unsigned int THashTarjetaVacunacion::maxColisiones() {
  */
 unsigned int THashTarjetaVacunacion::numMax10() {
     //TODO numMax
+    return 0;
 }
 
 /**
@@ -211,7 +254,7 @@ unsigned int THashTarjetaVacunacion::numMax10() {
  * @return 
  */
 unsigned int THashTarjetaVacunacion::promedioColisiones() {
-    return this->intentos1.back();
+    return this->intentos.back();
 }
 
 /**
@@ -228,7 +271,7 @@ float THashTarjetaVacunacion::factorCarga() {
  * @brief devuelve el tam de la tabla de dispersion
  * @return 
  */
-unsigned int THashTarjetaVacunacion::tamTabla() {
+unsigned int THashTarjetaVacunacion::getTamTabla() {
     return this->tabla.size();
 }
 
@@ -254,19 +297,14 @@ THashTarjetaVacunacion& THashTarjetaVacunacion::operator=(THashTarjetaVacunacion
     if (this == &thash) {
         return *this;
     }
-    colisiones1 = thash.colisiones1;
-    colisiones2 = thash.colisiones2;
-    colisiones3 = thash.colisiones3;
-    contadorIntentos1 = thash.contadorIntentos1;
-    contadorIntentos2 = thash.contadorIntentos2;
-    contadorIntentos3 = thash.contadorIntentos3;
-    intentos1 = thash.intentos1;
-    intentos2 = thash.intentos2;
-    intentos3 = thash.intentos3;
+    colisiones = thash.colisiones;
+    contadorIntentos = thash.contadorIntentos;
+    intentos = thash.intentos;
     medCol = thash.medCol;
     tabla = thash.tabla;
-    tamTabla1 = thash.tamTabla1;
-    tamTabla2 = thash.tamTabla2;
+    tamTabla = thash.tamTabla;
+
+    return *this;
 }
 
 /* GETTERS Y SETTERS */

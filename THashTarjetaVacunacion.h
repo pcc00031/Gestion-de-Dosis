@@ -16,21 +16,10 @@
 class THashTarjetaVacunacion {
 private:
 
-    unsigned int tamTabla1 = 16603;
-    unsigned int tamTabla2 = 15013;
-
-    unsigned int colisiones1 = 0;
-    unsigned int colisiones2 = 0;
-    unsigned int colisiones3 = 0;
-
-    std::vector<int> intentos1;
-    std::vector<int> intentos2;
-    std::vector<int> intentos3;
-
-
-    unsigned int contadorIntentos1 = 0;
-    unsigned int contadorIntentos2 = 0;
-    unsigned int contadorIntentos3 = 0;
+    unsigned int tamTabla = 14713;
+    unsigned int colisiones = 0;
+    std::vector<int> intentos;
+    unsigned int contadorIntentos = 0;
 
     std::vector<int> medCol;
 
@@ -40,8 +29,8 @@ private:
     /* FUNCIONES DE DISPERSION */
 
     unsigned long hash1(unsigned long str, int intento);
-    unsigned long hash20(unsigned long str, int intento);
-    unsigned long hash30(unsigned long str, int intento);
+    unsigned long hash2(unsigned long str, int intento);
+    unsigned long hash3(unsigned long str, int intento);
 
 public:
     THashTarjetaVacunacion();
@@ -57,7 +46,6 @@ public:
     
     bool buscar(unsigned long clave, std::string &id, TarjetaVacunacion &t);
     bool borrar(unsigned long clave, std::string &id);
-    unsigned int numPalabras();
     void redispersar(unsigned tam);
 
     /* METODOS DE PRUEBA */
@@ -66,7 +54,7 @@ public:
     unsigned int numMax10();
     unsigned int promedioColisiones();
     float factorCarga();
-    unsigned int tamTabla();
+    unsigned int getTamTabla();
     unsigned int numTarjetas();
 
     /* OPERADORES */

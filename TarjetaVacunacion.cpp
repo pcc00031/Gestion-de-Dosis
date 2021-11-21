@@ -5,12 +5,17 @@
  */
 
 #include "TarjetaVacunacion.h"
+#include "excepciones/DosisNoAdministrada.h"
+#include "excepciones/UsuarioNoAgregadoTarjeta.h"
+#include "picosha2.h"
 
 /* CONSTRUCTORES */
 
 TarjetaVacunacion::TarjetaVacunacion(const TarjetaVacunacion& orig) :
 id(orig.id), dosisAdministradas(orig.dosisAdministradas), idCentroCercano(orig.idCentroCercano),
-pautaCompleta(orig.pautaCompleta), tarjetaUsuario(orig.tarjetaUsuario) {
+pautaCompleta(orig.pautaCompleta), tarjetaUsuario(orig.tarjetaUsuario)
+//,         pasaporte(orig.pasaporte) 
+{
 }
 
 TarjetaVacunacion::~TarjetaVacunacion() {
@@ -40,6 +45,8 @@ std::vector<Dosis*> TarjetaVacunacion::getDosis() {
  */
 void TarjetaVacunacion::addDosis(Dosis *d) {
     this->dosisAdministradas.push_back(d);
+    if (this->dosisAdministradas.at(dosisAdministradas.size() - 1)->GetId() != d->GetId())
+        throw DosisNoAdministrada();
 }
 
 /**
@@ -49,7 +56,22 @@ void TarjetaVacunacion::addDosis(Dosis *d) {
  * @return false en caso de que no tener pauta completa y un codigo nulo
  */
 std::string TarjetaVacunacion::pasaporteCovidCode(bool valido) {
-    //TODO pasaporteCovid
+    //FIXME esta bien?
+    if (this->dosisAdministradas[0] == nullptr)
+        throw DosisNoAdministrada();
+
+    std::string hash = "";
+    Dosis d;
+    if (!valido) {
+        //this->pasaporte = hash;
+        return hash;
+    }
+
+    hash = picosha2::hash256_hex_string(this->id
+            + d.fabToString(this->dosisAdministradas[0]->GetFabricante())
+            + to_string(this->dosisAdministradas.size()));
+    //this->pasaporte = hash;
+    return hash;
 }
 
 /**
@@ -86,6 +108,8 @@ int TarjetaVacunacion::dosisPorAdministrar() {
 
 void TarjetaVacunacion::SetTarjetaUsuario(Usuario* tarjetaUsuario) {
     this->tarjetaUsuario = tarjetaUsuario;
+    if (this->tarjetaUsuario->GetNSS() != tarjetaUsuario->GetNSS())
+        throw UsuarioNoAgregadoTarjeta();
 }
 
 Usuario* TarjetaVacunacion::GetTarjetaUsuario() const {
@@ -116,6 +140,10 @@ std::string TarjetaVacunacion::getId() const {
     return id;
 }
 
+//std::string TarjetaVacunacion::getPasaporte() const {
+//    return pasaporte;
+//}
+
 /* OPERADORES */
 
 TarjetaVacunacion& TarjetaVacunacion::operator=(const TarjetaVacunacion& right) {
@@ -124,6 +152,7 @@ TarjetaVacunacion& TarjetaVacunacion::operator=(const TarjetaVacunacion& right) 
     this->idCentroCercano = right.idCentroCercano;
     this->pautaCompleta = right.pautaCompleta;
     this->tarjetaUsuario = right.tarjetaUsuario;
+    // this->pasaporte = right.pasaporte;
 
     return *this;
 }

@@ -14,6 +14,8 @@
 #include "THashTarjetaVacunacion.h"
 #include <fstream>
 #include <algorithm>
+#include <optional>
+#include <functional>
 
 class GestionVacunas {
 private:
@@ -45,12 +47,12 @@ public:
     TarjetaVacunacion* buscarTarjeta(std::string id);
     void borrarTarjeta(std::string id);
     CentroVacunacion* buscarCentro(int id);
-    void actualizarUsuario(Usuario &u);
     vector<string>& listadoCompletoNSS();
     CentroVacunacion* vacunarUsuario(TarjetaVacunacion *t);
 
     int pautaCompleta();
     int pautaCompletaRecomendable();
+    int pasaporteCovid();
     vector<Usuario*> listadoVacunacionNR();
     void suministrarNDosisAlCentro(CentroVacunacion *centro, int nDosis);
     int numTotalVacunasTipo(Fabricante f);

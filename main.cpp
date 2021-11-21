@@ -1,4 +1,3 @@
-#include <sys/unistd.h>
 
 #include "GestionVacunas.h"
 
@@ -41,6 +40,7 @@ int main() {
                 }
                 cout << "factor carga 1: " << tabla1.factorCarga() << endl;
                 cout << "colisiones 1: " << tabla1.maxColisiones() << endl;
+                cout << "numero tarjetas 1: " << tabla1.numTarjetas() << endl;
 
                 cout << "factor carga 2: " << tabla2.factorCarga() << endl;
                 cout << "colisiones 2: " << tabla2.maxColisiones() << endl;
@@ -72,7 +72,7 @@ int main() {
                 cout << "colisiones 6: " << tabla6.maxColisiones() << endl;
             }
                 break;
-                
+
                 // RESOLUCION PRACTICA 5
             default:
             case 2:
@@ -188,7 +188,7 @@ int main() {
 
                 cont = 0;
                 for (int i = 0; i < listadoNSS.size(); i++) {
-                    if (listadoNSS[i].back() % 2 == 0) { // comprobacion par
+                    if (listadoNSS[i].back() % 2 == 0) { // comprobacion par para vacunar segunda dosis
                         u = gv.buscarUsuario(listadoNSS[i]);
 
                         if (u != nullptr) {
@@ -252,6 +252,7 @@ int main() {
 
                 // Comprobar cuántos usuarios tienen pasaporte covid.
 
+                cout << "- Usuarios con pasaporte covid: " << gv.pasaporteCovid() << endl;
                 cout << "- Usuarios con pauta completa recomendable: " << gv.pautaCompletaRecomendable() << endl << endl;
 
                 cout << "-------------------------------------------------------------------------------"
