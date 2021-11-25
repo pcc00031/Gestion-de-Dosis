@@ -61,7 +61,7 @@ bool CentroVacunacion::administrarDosis(TarjetaVacunacion *t, Fabricante fab) {
         if (!gv->isQuedanVacunas())
             throw NoQuedanDosis();
         alarmaFaltaDosis(t->getDosisRecomendable()); // si no existen y quedan vacunas por leer, salta alarma
-        gv->vacunarUsuario(t); // intentamos vacunar de nuevo //FIXME se hace asi?
+        gv->vacunarUsuario(t); // intentamos vacunar de nuevo //FIXME cambiar a administrarDosis()
     }
 
     // En otro caso, realizamos el proceso de vacunacion normal  
@@ -73,13 +73,8 @@ bool CentroVacunacion::administrarDosis(TarjetaVacunacion *t, Fabricante fab) {
             it->second.setEstado(Estado::administrada);
             this->tarjetas.pop_front(); // borramos al usuario de la lista      
             //std::cout << "vacunado: " << u->GetNSS() << " en centro: " << this->id << std::endl;
-
-            // Generacion pasaporte //FIXME hacemos aqui?
-            if (t->dosisPorAdministrar() != 0) {
-                t->pasaporteCovidCode(false);
-                return true;
-            }
-            t->pasaporteCovidCode(true);
+            if (t->dosisPorAdministrar() == 0) // asignamos pauta completa (por defecto 'false')
+                t->SetPautaCompleta(true);
             return true;
         }
         ++it;
@@ -93,13 +88,8 @@ bool CentroVacunacion::administrarDosis(TarjetaVacunacion *t, Fabricante fab) {
             it->second.setEstado(Estado::administrada);
             this->tarjetas.pop_front(); // borramos al usuario de la lista  
             //std::cout << "vacunado: " << u->GetNSS() << " en centro: " << this->id << std::endl;
-
-            // Generacion pasaporte
-            if (t->dosisPorAdministrar() != 0) {
-                t->pasaporteCovidCode(false);
-                return false;
-            }
-            t->pasaporteCovidCode(true);
+            if (t->dosisPorAdministrar() == 0) // asignamos pauta completa (por defecto 'false')
+                t->SetPautaCompleta(true);
             return false;
         }
         ++it;

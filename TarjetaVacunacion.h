@@ -18,7 +18,6 @@ private:
     std::string id = "";
     bool pautaCompleta = false;
     int idCentroCercano = 0;
-    //std::string pasaporte = "";
     std::vector<Dosis*> dosisAdministradas;
     Usuario *tarjetaUsuario;
 

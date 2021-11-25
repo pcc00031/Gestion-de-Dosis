@@ -56,21 +56,17 @@ void TarjetaVacunacion::addDosis(Dosis *d) {
  * @return false en caso de que no tener pauta completa y un codigo nulo
  */
 std::string TarjetaVacunacion::pasaporteCovidCode(bool valido) {
-    //FIXME esta bien?
-    if (this->dosisAdministradas[0] == nullptr)
-        throw DosisNoAdministrada();
-
     std::string hash = "";
-    Dosis d;
-    if (!valido) {
-        //this->pasaporte = hash;
+    if (!this->pautaCompleta) {
+        valido = false;
         return hash;
     }
 
+    Dosis d;
     hash = picosha2::hash256_hex_string(this->id
             + d.fabToString(this->dosisAdministradas[0]->GetFabricante())
             + to_string(this->dosisAdministradas.size()));
-    //this->pasaporte = hash;
+    valido = true;
     return hash;
 }
 
@@ -106,13 +102,13 @@ int TarjetaVacunacion::dosisPorAdministrar() {
 
 /* GETTERS Y SETTERS */
 
-void TarjetaVacunacion::SetTarjetaUsuario(Usuario* tarjetaUsuario) {
+void TarjetaVacunacion::SetTarjetaUsuario(Usuario * tarjetaUsuario) {
     this->tarjetaUsuario = tarjetaUsuario;
     if (this->tarjetaUsuario->GetNSS() != tarjetaUsuario->GetNSS())
         throw UsuarioNoAgregadoTarjeta();
 }
 
-Usuario* TarjetaVacunacion::GetTarjetaUsuario() const {
+Usuario * TarjetaVacunacion::GetTarjetaUsuario() const {
     return tarjetaUsuario;
 }
 
@@ -140,13 +136,9 @@ std::string TarjetaVacunacion::getId() const {
     return id;
 }
 
-//std::string TarjetaVacunacion::getPasaporte() const {
-//    return pasaporte;
-//}
-
 /* OPERADORES */
 
-TarjetaVacunacion& TarjetaVacunacion::operator=(const TarjetaVacunacion& right) {
+TarjetaVacunacion & TarjetaVacunacion::operator=(const TarjetaVacunacion & right) {
     this->id = right.id;
     this->dosisAdministradas = right.dosisAdministradas;
     this->idCentroCercano = right.idCentroCercano;
@@ -157,7 +149,7 @@ TarjetaVacunacion& TarjetaVacunacion::operator=(const TarjetaVacunacion& right) 
     return *this;
 }
 
-bool TarjetaVacunacion::operator==(const TarjetaVacunacion& right) const {
+bool TarjetaVacunacion::operator==(const TarjetaVacunacion & right) const {
     if (this->id == right.id) {
         return true;
     } else return false;

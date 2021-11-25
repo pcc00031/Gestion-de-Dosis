@@ -179,8 +179,6 @@ int main() {
                 cout << " - Numero total de vacunas Moderna: "
                         << gv.numTotalVacunasTipo(Fabricante::Moderna) << endl << endl;
 
-
-
                 cout << "-------------------------------------------------------------------------------"
                         "-------------------------------------------------------------------------------" << endl << endl;
 

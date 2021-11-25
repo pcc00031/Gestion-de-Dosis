@@ -84,17 +84,18 @@ CentroVacunacion* GestionVacunas::buscarCentro(int id) {
  */
 TarjetaVacunacion* GestionVacunas::buscarTarjeta(std::string id) {
     TarjetaVacunacion *t = &tarjetas.find(id)->second;
-    if (t->getId() != id) {
-        //std::cerr << "Tarjeta no encontrada" << std::endl;
-        //throw TarjetaNoEncontrada(); //FIXME que hago
+    if (t == nullptr) {
+        throw TarjetaNoEncontrada();
     }
     return t;
+    // tarjetas.buscar(algo, id, 
 }
 
 //FIXME cambiar cuando tabla hash
 
 void GestionVacunas::borrarTarjeta(std::string id) {
     tarjetas.erase(id);
+    //tarjetas.bo
     //    std::cout << "Tarjeta " << id << " borrada" << std::endl
     //            << "Tarjetas tras borrado: " << tarjetas.size() << std::endl << std::endl;
 }
@@ -156,11 +157,11 @@ int GestionVacunas::pautaCompletaRecomendable() {
  * @return 
  */
 int GestionVacunas::pasaporteCovid() {
-    int cont = 0; //FIXME hago asi o con atributo string pasaporte?
+    int cont = 0;
     map<std::string, TarjetaVacunacion>::iterator it;
     it = tarjetas.begin();
     while (it != tarjetas.end()) {
-        if (it->second.dosisPorAdministrar() == 0)
+        if (it->second.pasaporteCovidCode(false) != "")
             cont++;
         ++it;
     }
@@ -409,7 +410,7 @@ vector<Dosis> GestionVacunas::cargarDosis(int numCentro, int numDosis) {
             aux.push_back(d);
             cont++;
             if (aux.back().GetId() != d.GetId())
-                throw DosisNoSuministradas();
+                throw DosisNoSuministradas(); //FIXME mirar excepciones
         }
     }
     return aux;
