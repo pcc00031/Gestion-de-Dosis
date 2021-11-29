@@ -8,21 +8,21 @@
 
 /* CONSTRUCTORES */
 UTM::UTM(double _lat, double _long) :
-latitud(_lat), longitud(_long) {
+        latitud(_lat), longitud(_long) {
 }
 
 Usuario::Usuario(std::string NSS) :
-NSS(NSS) {
+        NSS(NSS) {
 }
 
 Usuario::Usuario(std::string nombre, std::string apellidos, std::string NSS, Fecha fechaNacimiento, UTM docimicilio) :
-nombre(nombre), apellidos(apellidos), NSS(NSS),
-fechaNacimiento(fechaNacimiento), docimicilio(docimicilio) {
+        nombre(nombre), apellidos(apellidos), NSS(NSS),
+        fechaNacimiento(fechaNacimiento), docimicilio(docimicilio) {
 }
 
-Usuario::Usuario(const Usuario& orig) :
-nombre(orig.nombre), apellidos(orig.apellidos), NSS(orig.NSS),
-fechaNacimiento(orig.fechaNacimiento), docimicilio(orig.docimicilio) {
+Usuario::Usuario(const Usuario &orig) :
+        nombre(orig.nombre), apellidos(orig.apellidos), NSS(orig.NSS),
+        fechaNacimiento(orig.fechaNacimiento), docimicilio(orig.docimicilio) {
 }
 
 Usuario::~Usuario() {
@@ -92,7 +92,7 @@ int Usuario::edad() {
 
 /* OPERADORES*/
 
-Usuario& Usuario::operator=(const Usuario& right) {
+Usuario &Usuario::operator=(const Usuario &right) {
     this->NSS = right.NSS;
     this->apellidos = right.apellidos;
     this->docimicilio = right.docimicilio;
@@ -101,13 +101,13 @@ Usuario& Usuario::operator=(const Usuario& right) {
     return *this;
 }
 
-bool Usuario::operator==(const Usuario& right) const {
+bool Usuario::operator==(const Usuario &right) const {
     if (this->NSS == right.NSS) {
         return true;
     } else return false;
 }
 
-bool Usuario::operator<(const Usuario& right) const {
+bool Usuario::operator<(const Usuario &right) const {
     return right.NSS > this->NSS;
 }
 

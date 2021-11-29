@@ -26,16 +26,19 @@ public:
     /* CONSTRUCTORES */
 
     ListaEnlazada();
+
     ListaEnlazada(const ListaEnlazada &orig);
+
     virtual ~ListaEnlazada();
 
     /* OPERADORES */
 
-    ListaEnlazada<T>& operator=(const ListaEnlazada<T> &l);
-    bool operator<(const ListaEnlazada<T>& right) const;
+    ListaEnlazada<T> &operator=(const ListaEnlazada<T> &l);
+
+    bool operator<(const ListaEnlazada<T> &right) const;
     // preparado para objetos de tipo dosis 
 
-    friend std::ostream& operator<<(std::ostream& os, const ListaEnlazada &obj) {
+    friend std::ostream &operator<<(std::ostream &os, const ListaEnlazada &obj) {
         if (obj.tam == 0) {
             std::cout << "  - No hay datos" << endl << endl;
         } else
@@ -61,19 +64,24 @@ public:
 
     // metodos de insercion
     void insertarInicio(T &dato);
+
     void insertarFinal(T &dato);
+
     void insertar(Iterador<T> &i, T &dato);
+
     void insertaOrdenado(T &dato);
 
     // metodos de borrado
     void borrarInicio();
+
     void borrarFinal();
+
     void borra(Iterador<T> &i);
 
     bool buscar(const T &dato, Iterador<T> &i);
 
-    T& inicio(); // dato en cabecera
-    T & final(); // dato en cola
+    T &inicio(); // dato en cabecera
+    T &final(); // dato en cola
 
     /* GETTERS Y SETTERS */
 
@@ -95,7 +103,7 @@ ListaEnlazada<T>::ListaEnlazada() : cabecera(0), cola(0), tam(0) {
  * @return 
  */
 template<class T>
-ListaEnlazada<T>::ListaEnlazada(const ListaEnlazada& orig) {
+ListaEnlazada<T>::ListaEnlazada(const ListaEnlazada &orig) {
     NodoL<T> *i = orig.cabecera;
 
     cabecera = cola = 0;
@@ -125,7 +133,7 @@ ListaEnlazada<T>::ListaEnlazada(const ListaEnlazada& orig) {
  * @return 
  */
 template<class T>
-ListaEnlazada<T>& ListaEnlazada<T>::operator=(const ListaEnlazada<T>& l) {
+ListaEnlazada<T> &ListaEnlazada<T>::operator=(const ListaEnlazada<T> &l) {
 
     if (this != &l) {
 
@@ -162,8 +170,8 @@ ListaEnlazada<T>& ListaEnlazada<T>::operator=(const ListaEnlazada<T>& l) {
 }
 
 template<class T>
-bool ListaEnlazada<T>::operator<(const ListaEnlazada<T>& right) const {
-    return right > * this;
+bool ListaEnlazada<T>::operator<(const ListaEnlazada<T> &right) const {
+    return right > *this;
 }
 
 /* METODOS */
@@ -172,7 +180,7 @@ bool ListaEnlazada<T>::operator<(const ListaEnlazada<T>& right) const {
  * @brief Iterador apuntando a cabecera
  * @return 
  */
-template<class T >
+template<class T>
 Iterador<T> ListaEnlazada<T>::iterador() {
     return Iterador<T>(cabecera);
 }
@@ -182,7 +190,7 @@ Iterador<T> ListaEnlazada<T>::iterador() {
  * @param dato
  */
 template<class T>
-void ListaEnlazada<T>::insertarInicio(T & dato) {
+void ListaEnlazada<T>::insertarInicio(T &dato) {
     NodoL<T> *nuevo;
     nuevo = new NodoL<T>(dato, cabecera);
     if (cola == 0)
@@ -195,7 +203,7 @@ void ListaEnlazada<T>::insertarInicio(T & dato) {
  * @param dato
  */
 template<class T>
-void ListaEnlazada<T>::insertarFinal(T & dato) {
+void ListaEnlazada<T>::insertarFinal(T &dato) {
 
     NodoL<T> *nuevo;
     nuevo = new NodoL<T>(dato, 0);
@@ -214,7 +222,7 @@ void ListaEnlazada<T>::insertarFinal(T & dato) {
  * @param dato
  */
 template<class T>
-void ListaEnlazada<T>::insertar(Iterador<T> &i, T & dato) {
+void ListaEnlazada<T>::insertar(Iterador<T> &i, T &dato) {
     // sin implementar
 }
 
@@ -223,7 +231,7 @@ void ListaEnlazada<T>::insertar(Iterador<T> &i, T & dato) {
  * @param dato
  */
 template<class T>
-void ListaEnlazada<T>::insertaOrdenado(T & dato) {
+void ListaEnlazada<T>::insertaOrdenado(T &dato) {
     NodoL<T> *nuevo;
     nuevo = new NodoL<T>(dato, 0);
     NodoL<T> *act;
@@ -234,7 +242,7 @@ void ListaEnlazada<T>::insertaOrdenado(T & dato) {
     } else {
         act = cabecera;
         while (act->sig != NULL &&
-                act->sig->dato < nuevo->dato) {
+               act->sig->dato < nuevo->dato) {
             act = act->sig;
         }
         nuevo->sig = act->sig;
@@ -320,7 +328,7 @@ void ListaEnlazada<T>::borra(Iterador<T> &i) {
  * @param i
  * @return 
  */
-template <class T>
+template<class T>
 bool ListaEnlazada<T>::buscar(const T &dato, Iterador<T> &i) {
 
     NodoL<T> *aux;
@@ -340,8 +348,8 @@ bool ListaEnlazada<T>::buscar(const T &dato, Iterador<T> &i) {
  * @brief Dato en cabecera
  * @return 
  */
-template<class T >
-T & ListaEnlazada<T>::inicio() {
+template<class T>
+T &ListaEnlazada<T>::inicio() {
     return cabecera->dato;
 }
 
@@ -349,8 +357,8 @@ T & ListaEnlazada<T>::inicio() {
  * @brief Dato en cola
  * @return 
  */
-template<class T >
-T & ListaEnlazada<T>::final() {
+template<class T>
+T &ListaEnlazada<T>::final() {
     return cola->dato;
 }
 
@@ -363,7 +371,7 @@ int ListaEnlazada<T>::getTam() const {
 
 /* DESTRUCTOR*/
 
-template<class T >
+template<class T>
 ListaEnlazada<T>::~ListaEnlazada() {
     NodoL<T> *siguiente;
     while (cabecera != NULL) {

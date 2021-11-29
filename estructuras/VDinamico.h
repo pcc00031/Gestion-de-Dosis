@@ -7,6 +7,7 @@
 
 #ifndef VDINAMICO_H
 #define VDINAMICO_H
+
 #include <stdlib.h>
 #include <iostream>
 #include <math.h>
@@ -31,35 +32,50 @@ public:
 
     VDinamico(); // Constructor por defecto
     VDinamico(unsigned int tam); // Constructor parametrizado
-    VDinamico(const VDinamico& origen); // Constructor copia
-    VDinamico(const VDinamico& origen, unsigned // Contructor copia parcial
-            int posicionInicial, unsigned int numElementos);
+    VDinamico(const VDinamico &origen); // Constructor copia
+    VDinamico(const VDinamico &origen, unsigned // Contructor copia parcial
+    int posicionInicial, unsigned int numElementos);
 
     /* OPERADORES */
 
-    VDinamico<T>& operator=(const VDinamico& right);
-    T&operator[](int pos);
-    bool operator!=(const VDinamico<T>& right) const;
-    bool operator<(const VDinamico<T>& right) const;
-    bool operator<=(const VDinamico<T>& right) const;
-    bool operator==(const VDinamico<T>& right) const;
-    bool operator>(const VDinamico<T>& right) const;
-    bool operator>=(const VDinamico<T>& right) const;
+    VDinamico<T> &operator=(const VDinamico &right);
 
-    friend std::ostream& operator<<(std::ostream& os, const VDinamico<T>& obj) {
+    T &operator[](int pos);
+
+    bool operator!=(const VDinamico<T> &right) const;
+
+    bool operator<(const VDinamico<T> &right) const;
+
+    bool operator<=(const VDinamico<T> &right) const;
+
+    bool operator==(const VDinamico<T> &right) const;
+
+    bool operator>(const VDinamico<T> &right) const;
+
+    bool operator>=(const VDinamico<T> &right) const;
+
+    friend std::ostream &operator<<(std::ostream &os, const VDinamico<T> &obj) {
         return os;
     }
 
     /* METODOS */
 
-    void insertar(const T& dato, unsigned int pos = UINT_MAX);
+    void insertar(const T &dato, unsigned int pos = UINT_MAX);
+
     T borrar(unsigned int pos = UINT_MAX);
+
     void ordenar();
+
     void ordenarRev();
-    int buscar(T & dato);
-    int busquedaBin(T& dato);
+
+    int buscar(T &dato);
+
+    int busquedaBin(T &dato);
+
     int lee(unsigned pos);
+
     void escribe(unsigned pos, int dato);
+
     void aumenta(int dato); // Inserción por la derecha
     int disminuye(); // Eliminar dato por la derecha
     void datosVector();
@@ -67,8 +83,10 @@ public:
     /* GETTERS Y SETTERS */
 
     unsigned int tam() const;
+
     unsigned int tamf() const;
-    T* getV() const;
+
+    T *getV() const;
 
     /* DESTRUCTOR */
 
@@ -111,7 +129,7 @@ VDinamico<T>::VDinamico(unsigned int tam) : tamal(0) {
  */
 template<class T>
 VDinamico<T>::VDinamico(const VDinamico<T> &orig) : tamaf(orig.tamaf),
-tamal(orig.tamal), v(orig.v) {
+                                                    tamal(orig.tamal), v(orig.v) {
 };
 
 /**
@@ -122,8 +140,8 @@ tamal(orig.tamal), v(orig.v) {
  * @param num
  */
 template<class T>
-VDinamico<T>::VDinamico(const VDinamico<T>& orig, unsigned int inicio, unsigned int num) :
-VDinamico<T>::VDinamico(num) {
+VDinamico<T>::VDinamico(const VDinamico<T> &orig, unsigned int inicio, unsigned int num) :
+        VDinamico<T>::VDinamico(num) {
     if (inicio >= orig.tamal || inicio + num > orig.tamal)
         throw std::out_of_range("{VDinamico::operator[]} El parametro insertado está fuera de rango");
     for (int i = 0; i < num; i++) {
@@ -140,8 +158,8 @@ VDinamico<T>::VDinamico(num) {
  * @param pos
  * @return 
  */
-template<class T >
-T & VDinamico<T>::operator[](int pos) {
+template<class T>
+T &VDinamico<T>::operator[](int pos) {
     if (pos >= tamal)
         throw std::out_of_range("[VDinamico::operator[]] El parametro insertado está fuera de rango");
     return v[pos];
@@ -153,8 +171,8 @@ T & VDinamico<T>::operator[](int pos) {
  * @param right
  * @return 
  */
-template<class T >
-VDinamico<T>& VDinamico<T>::operator=(const VDinamico<T>& orig) {
+template<class T>
+VDinamico<T> &VDinamico<T>::operator=(const VDinamico<T> &orig) {
     if (this == &orig) {
         return *this;
     }
@@ -169,38 +187,38 @@ VDinamico<T>& VDinamico<T>::operator=(const VDinamico<T>& orig) {
 }
 
 template<class T>
-bool VDinamico<T>::operator!=(const VDinamico<T>& right) const {
+bool VDinamico<T>::operator!=(const VDinamico<T> &right) const {
     bool result = !(*this == right);
     return result;
 }
 
 template<class T>
-bool VDinamico<T>::operator<(const VDinamico<T>& right) const {
-    return right > * this;
+bool VDinamico<T>::operator<(const VDinamico<T> &right) const {
+    return right > *this;
 }
 
 template<class T>
-bool VDinamico<T>::operator<=(const VDinamico<T>& right) const {
+bool VDinamico<T>::operator<=(const VDinamico<T> &right) const {
     return !(*this > right);
 }
 
 template<class T>
-bool VDinamico<T>::operator==(const VDinamico<T>& right) const {
+bool VDinamico<T>::operator==(const VDinamico<T> &right) const {
     if (this->tamaf == right.tamaf &&
-            this->tamal == right.tamal &&
-            this->v == right.v) {
+        this->tamal == right.tamal &&
+        this->v == right.v) {
         return true;
     } else return false;
 }
 
 template<class T>
-bool VDinamico<T>::operator>(const VDinamico<T>& right) const {
+bool VDinamico<T>::operator>(const VDinamico<T> &right) const {
     return right < *this;
 }
 
 template<class T>
-bool VDinamico<T>::operator>=(const VDinamico<T>& right) const {
-    return !(right > * this);
+bool VDinamico<T>::operator>=(const VDinamico<T> &right) const {
+    return !(right > *this);
 }
 
 /* METODOS */
@@ -214,7 +232,7 @@ bool VDinamico<T>::operator>=(const VDinamico<T>& right) const {
  * @param pos
  */
 template<class T>
-void VDinamico<T>::insertar(const T& dato, unsigned int pos) {
+void VDinamico<T>::insertar(const T &dato, unsigned int pos) {
     if (pos >= tamal && pos != UINT_MAX)
         throw std::out_of_range("[VDinamico::insertar] El parametro insertado está fuera de rango");
     if (tamaf <= tamal) {
@@ -222,7 +240,7 @@ void VDinamico<T>::insertar(const T& dato, unsigned int pos) {
         vaux = new T[tamaf = tamaf * 2];
         for (int i = 0; i < tamal; i++)
             vaux[i] = v[i];
-        delete []v;
+        delete[]v;
         v = vaux;
     }
     if (pos == UINT_MAX) {
@@ -259,12 +277,12 @@ T VDinamico<T>::borrar(unsigned int pos) {
     }
 
     if (tamal * 3 < tamal) {
-        T *vaux = new T [tamal = tamal / 2];
+        T *vaux = new T[tamal = tamal / 2];
 
         for (int i = 0; i < tamal; i++)
             vaux[i] = v[i];
 
-        delete [] v;
+        delete[] v;
         v = vaux;
     }
     return aux;
@@ -296,7 +314,7 @@ void VDinamico<T>::ordenarRev() {
  * @return 
  */
 template<class T>
-int VDinamico<T>::busquedaBin(T & dato) {
+int VDinamico<T>::busquedaBin(T &dato) {
     int first = 0;
     int last = tamal - 1;
     int middle = (first + last) / 2;
@@ -323,7 +341,7 @@ int VDinamico<T>::busquedaBin(T & dato) {
  * @return 
  */
 template<class T>
-int VDinamico<T>::buscar(T & dato) {
+int VDinamico<T>::buscar(T &dato) {
     for (int i = 0; i < tamal; i++) {
         if (v[i] == dato) {
             return i;
@@ -344,8 +362,8 @@ unsigned int VDinamico<T>::tamf() const {
     return tamaf;
 };
 
-template<class T >
-T * VDinamico<T>::getV() const {
+template<class T>
+T *VDinamico<T>::getV() const {
     return v;
 }
 
@@ -376,7 +394,7 @@ void VDinamico<T>::datosVector() {
 /**
  * @brief Destructor
  */
-template<class T >
+template<class T>
 VDinamico<T>::~VDinamico() {
 };
 

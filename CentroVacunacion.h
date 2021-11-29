@@ -18,36 +18,44 @@ class GestionVacunas; // para relacion circular
 
 class CentroVacunacion {
 private:
-    multimap<std::string, Dosis> dosis;
-    list<TarjetaVacunacion*> tarjetas;
+    multimap <std::string, Dosis> dosis;
+    list<TarjetaVacunacion *> tarjetas;
     int id = 0;
     UTM direccion;
     GestionVacunas *gv;
+
     void alarmaFaltaDosis(Fabricante f);
 
 public:
     /* CONSTRUCTORES */
 
     CentroVacunacion() = default;
+
     CentroVacunacion(int id, UTM direccion);
-    CentroVacunacion(const CentroVacunacion& orig);
+
+    CentroVacunacion(const CentroVacunacion &orig);
+
     virtual ~CentroVacunacion();
 
     /* METODOS */
 
     void anadirTarjetaLista(TarjetaVacunacion *t);
+
     bool administrarDosis(TarjetaVacunacion *t, Fabricante fab);
-    void anadirNDosisAlmacen(vector<Dosis> &packDosis);
+
+    void anadirNDosisAlmacen(vector <Dosis> &packDosis);
+
     int numVacunasTipo(Fabricante f);
 
     int verDosisRestantes(); // metodo auxiliar de comprobacion
 
     /* OPERADORES */
 
-    CentroVacunacion& operator=(const CentroVacunacion& right);
-    bool operator==(const CentroVacunacion& right) const;
+    CentroVacunacion &operator=(const CentroVacunacion &right);
 
-    friend std::ostream& operator<<(std::ostream& os, const CentroVacunacion& obj) {
+    bool operator==(const CentroVacunacion &right) const;
+
+    friend std::ostream &operator<<(std::ostream &os, const CentroVacunacion &obj) {
         std::cout << " ID: " << obj.id << std::endl;
         return os;
     }
@@ -55,10 +63,14 @@ public:
     /* GETTERS Y SETTERS */
 
     UTM getDireccion() const;
+
     void setDireccion(UTM direccion);
+
     int getId() const;
+
     void setId(int id);
-    void setGv(GestionVacunas* gv);
+
+    void setGv(GestionVacunas *gv);
 
 };
 

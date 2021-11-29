@@ -9,7 +9,7 @@
 #ifndef NODO_H
 #define NODO_H
 
-template <typename U>
+template<typename U>
 class Nodo {
 public:
     Nodo<U> *izq, *der;
@@ -20,10 +20,10 @@ public:
     }
 
     Nodo(Nodo *aizq = nullptr, Nodo *ader = nullptr, U adato = 0, char abal = 0) :
-    izq(aizq),
-    der(ader),
-    dato(adato),
-    bal(abal) {
+            izq(aizq),
+            der(ader),
+            dato(adato),
+            bal(abal) {
     }
 };
 

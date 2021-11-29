@@ -20,9 +20,13 @@ private:
 public:
 
     Iterador(NodoL<T> *aNodo);
+
     NodoL<T> *nodo;
+
     bool fin();
+
     void siguiente();
+
     T &dato();
 };
 

@@ -16,7 +16,7 @@ using namespace std;
 class NoQuedanDosis : public exception {
 public:
 
-    const char* what() const throw () {
+    const char *what() const throw() {
         return "No quedan dosis en el almacen";
     }
 };

@@ -12,29 +12,37 @@
 #include "Nodo.h"
 #include "VDinamico.h"
 
-template <typename T>
+template<typename T>
 class AVL {
     Nodo<T> *raiz;
 private:
 
     /* METODOS PRIVADOS*/
-    int inserta(Nodo<T>* &c, T &dato);
-    void rotDecha(Nodo<T>* &p);
-    void rotIzqda(Nodo<T>* &p);
+    int inserta(Nodo<T> *&c, T &dato);
+
+    void rotDecha(Nodo<T> *&p);
+
+    void rotIzqda(Nodo<T> *&p);
 
     Nodo<T> *buscaClave(T &ele, Nodo<T> *p);
+
     void copiarNodo(Nodo<T> *pun);
-    VDinamico<T*> inorden(Nodo<T> *p, int nivel, VDinamico<T*> &v);
+
+    VDinamico<T *> inorden(Nodo<T> *p, int nivel, VDinamico<T *> &v);
+
     void recorrerArbolNumElem(Nodo<T> *pun, int &cont);
+
     void recorrerArbolAltura(Nodo<T> *pun, int &cont, int &alt);
-    void destruirNodo(Nodo<T>* &ref);
+
+    void destruirNodo(Nodo<T> *&ref);
 
 public:
 
     /* CONSTRUCTORES*/
 
     AVL();
-    AVL(const AVL& orig);
+
+    AVL(const AVL &orig);
 
     /* SOBRECARGA DE OPERADORES*/
 
@@ -42,12 +50,18 @@ public:
 
     /* METODOS PUBLICOS */
 
-    VDinamico<T*> recorreInorden();
+    VDinamico<T *> recorreInorden();
+
     unsigned int numElementos();
+
     unsigned int altura();
-    bool buscaR(T &ele, T* &result);
-    bool buscaIt(T& dato, T& result);
+
+    bool buscaR(T &ele, T *&result);
+
+    bool buscaIt(T &dato, T &result);
+
     bool inserta(T &dato);
+
     ~AVL();
 
 };
@@ -57,7 +71,7 @@ public:
 /** 
  * @brief Constructor por defecto
  */
-template <typename T>
+template<typename T>
 AVL<T>::AVL() {
     raiz = 0;
 }
@@ -66,8 +80,8 @@ AVL<T>::AVL() {
  * @brief Constructor de copia
  * @param origen
  */
-template <typename T>
-AVL<T>::AVL(const AVL& origen) {
+template<typename T>
+AVL<T>::AVL(const AVL &origen) {
     copiarNodo(origen.raiz);
 }
 
@@ -75,7 +89,7 @@ AVL<T>::AVL(const AVL& origen) {
  * @brief Operador =
  * @param right
  */
-template <typename T>
+template<typename T>
 AVL<T> &AVL<T>::operator=(const AVL<T> &right) {
     if (this != &right) {
         destruirNodo(raiz);
@@ -88,11 +102,11 @@ AVL<T> &AVL<T>::operator=(const AVL<T> &right) {
  * @brief copia los nodos de un árbol recursivamente
  * @param *pun   
  */
-template <typename T>
+template<typename T>
 void AVL<T>::copiarNodo(Nodo<T> *pun) {
     if (pun != nullptr) {
         Nodo<T> *nuevoNodo;
-        nuevoNodo = new Nodo<T> (pun->izq, pun->der, pun->dato, pun->bal);
+        nuevoNodo = new Nodo<T>(pun->izq, pun->der, pun->dato, pun->bal);
         copiarNodo(nuevoNodo->izq);
         copiarNodo(nuevoNodo->der);
     }
@@ -102,8 +116,8 @@ void AVL<T>::copiarNodo(Nodo<T> *pun) {
  * @brief  cambia el dato de un nodo rotando hacia la izquierda
  * @param &p  
  */
-template <typename T>
-void AVL<T>::rotIzqda(Nodo<T>* &p) {
+template<typename T>
+void AVL<T>::rotIzqda(Nodo<T> *&p) {
     Nodo<T> *q = p, *r;
     p = r = q->der;
     q->der = r->izq;
@@ -120,8 +134,8 @@ void AVL<T>::rotIzqda(Nodo<T>* &p) {
  * @brief Cambia el dato de un nodo rotando hacia la derecha
  * @param &p  
  */
-template <typename T>
-void AVL<T>::rotDecha(Nodo<T>* &p) {
+template<typename T>
+void AVL<T>::rotDecha(Nodo<T> *&p) {
     Nodo<T> *q = p, *l;
     p = l = q->izq;
     q->izq = l->der;
@@ -139,8 +153,8 @@ void AVL<T>::rotDecha(Nodo<T>* &p) {
  * @param &p  
  * @post Devuelve 0 en el caso de que el nodo no sea nullptr y 1 si el nodo es nullptr
  */
-template <typename T>
-int AVL<T>::inserta(Nodo<T>* &c, T &dato) {
+template<typename T>
+int AVL<T>::inserta(Nodo<T> *&c, T &dato) {
     Nodo<T> *p = c;
     int deltaH = 0;
     if (!p) {
@@ -178,8 +192,8 @@ int AVL<T>::inserta(Nodo<T>* &c, T &dato) {
  * @param ele  
  * @post Devuelve true en el caso de que el dato no esté ya en el árbol y false si el dato estaba ya en el árbol
  */
-template <typename T>
-bool AVL<T>::inserta(T& ele) {
+template<typename T>
+bool AVL<T>::inserta(T &ele) {
     T *pun;
     bool encontrado = buscaR(ele, pun);
 
@@ -198,7 +212,7 @@ bool AVL<T>::inserta(T& ele) {
  * evuelve el puntero al dato en el caso de que lo hayamos encontrado
  */
 
-template <typename T>
+template<typename T>
 Nodo<T> *AVL<T>::buscaClave(T &ele, Nodo<T> *p) {
     if (!p)
         return 0;
@@ -216,8 +230,8 @@ Nodo<T> *AVL<T>::buscaClave(T &ele, Nodo<T> *p) {
  * @param *p  
  * @post Devuelve true en caso de encontrarlo y false en caso contrario
  */
-template <typename T>
-bool AVL<T>::buscaR(T &ele, T* &result) {
+template<typename T>
+bool AVL<T>::buscaR(T &ele, T *&result) {
     Nodo<T> *p = buscaClave(ele, raiz);
     if (p) {
         result = &p->dato;
@@ -232,8 +246,8 @@ bool AVL<T>::buscaR(T &ele, T* &result) {
  * @param result 
  * @post Devuelve true en caso de encontrarlo y false en caso contrario
  */
-template <typename T>
-bool AVL<T>::buscaIt(T& dato, T& result) {
+template<typename T>
+bool AVL<T>::buscaIt(T &dato, T &result) {
     Nodo<T> *iterador = raiz;
     while (iterador != nullptr) {
         if (iterador->dato < dato)
@@ -252,9 +266,9 @@ bool AVL<T>::buscaIt(T& dato, T& result) {
  * @brief Recorre el árbol en inorden
  */
 
-template <typename T>
-VDinamico<T*> AVL<T>::recorreInorden() {
-    VDinamico<T*> vector = VDinamico<T*>();
+template<typename T>
+VDinamico<T *> AVL<T>::recorreInorden() {
+    VDinamico<T *> vector = VDinamico<T *>();
     int nivel = 0;
     Nodo<T> *p = raiz;
     return inorden(p, nivel, vector);
@@ -265,8 +279,8 @@ VDinamico<T*> AVL<T>::recorreInorden() {
  * @param *p
  * @param &nivel 
  */
-template <typename T>
-VDinamico<T*> AVL<T>::inorden(Nodo<T> *p, int nivel, VDinamico<T*> &v) {
+template<typename T>
+VDinamico<T *> AVL<T>::inorden(Nodo<T> *p, int nivel, VDinamico<T *> &v) {
     if (p) {
         inorden(p->izq, nivel + 1, v);
         v.insertar(&p->dato);
@@ -282,7 +296,7 @@ VDinamico<T*> AVL<T>::inorden(Nodo<T> *p, int nivel, VDinamico<T*> &v) {
  * @post  Devuelve el numero de elementos
  */
 
-template <typename T>
+template<typename T>
 unsigned int AVL<T>::numElementos() {
     int cont = 0;
     Nodo<T> *pun = raiz;
@@ -296,7 +310,7 @@ unsigned int AVL<T>::numElementos() {
  * @param cont
  */
 
-template <typename T>
+template<typename T>
 void AVL<T>::recorrerArbolNumElem(Nodo<T> *pun, int &cont) {
     if (pun) {
         cont++;
@@ -309,7 +323,7 @@ void AVL<T>::recorrerArbolNumElem(Nodo<T> *pun, int &cont) {
  * @brief Calcula la altura de un arbol
  * @post  Devuelve la altura del arbol
  */
-template <typename T>
+template<typename T>
 unsigned int AVL<T>::altura() {
     int alt = 0;
     int cont = 0;
@@ -323,7 +337,7 @@ unsigned int AVL<T>::altura() {
  * @param cont
  * @param alt
  */
-template <typename T>
+template<typename T>
 void AVL<T>::recorrerArbolAltura(Nodo<T> *pun, int &cont, int &alt) {
     if (pun) {
         cont++;
@@ -340,8 +354,8 @@ void AVL<T>::recorrerArbolAltura(Nodo<T> *pun, int &cont, int &alt) {
  * @brief Destruye un nodo
  * @param ref
  */
-template <typename T>
-void AVL<T>::destruirNodo(Nodo<T>* &ref) {
+template<typename T>
+void AVL<T>::destruirNodo(Nodo<T> *&ref) {
     if (ref != nullptr) {
         destruirNodo(ref->izq);
         destruirNodo(ref->der);
@@ -353,7 +367,7 @@ void AVL<T>::destruirNodo(Nodo<T>* &ref) {
 /**
  * @brief Destructor
  */
-template <typename T>
+template<typename T>
 AVL<T>::~AVL() {
     destruirNodo(raiz);
 }

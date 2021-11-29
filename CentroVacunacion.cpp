@@ -13,11 +13,11 @@
 /* CONSTRUCTORES */
 
 CentroVacunacion::CentroVacunacion(int id, UTM direccion) :
-id(id), direccion(direccion) {
+        id(id), direccion(direccion) {
 }
 
-CentroVacunacion::CentroVacunacion(const CentroVacunacion& orig) :
-direccion(orig.direccion), dosis(orig.dosis), tarjetas(orig.tarjetas), id(orig.id), gv(orig.gv) {
+CentroVacunacion::CentroVacunacion(const CentroVacunacion &orig) :
+        direccion(orig.direccion), dosis(orig.dosis), tarjetas(orig.tarjetas), id(orig.id), gv(orig.gv) {
 }
 
 CentroVacunacion::~CentroVacunacion() {
@@ -61,7 +61,7 @@ bool CentroVacunacion::administrarDosis(TarjetaVacunacion *t, Fabricante fab) {
         if (!gv->isQuedanVacunas())
             throw NoQuedanDosis();
         alarmaFaltaDosis(t->getDosisRecomendable()); // si no existen y quedan vacunas por leer, salta alarma
-        gv->vacunarUsuario(t); // intentamos vacunar de nuevo //FIXME cambiar a administrarDosis()
+        gv->vacunarUsuario(t); // intentamos vacunar de nuevo
     }
 
     // En otro caso, realizamos el proceso de vacunacion normal  
@@ -118,10 +118,11 @@ int CentroVacunacion::numVacunasTipo(Fabricante f) {
 /**
  * @brief Recibe 100 nuevas dosis
  */
-void CentroVacunacion::anadirNDosisAlmacen(vector<Dosis> &packDosis) {
+void CentroVacunacion::anadirNDosisAlmacen(vector <Dosis> &packDosis) {
     long unsigned int tamDosis = dosis.size();
     for (int i = 0; i < packDosis.size(); i++) {
-        this->dosis.insert(pair<std::string, Dosis>(packDosis[i].fabToString(packDosis[i].GetFabricante()), packDosis[i]));
+        this->dosis.insert(
+                pair<std::string, Dosis>(packDosis[i].fabToString(packDosis[i].GetFabricante()), packDosis[i]));
     }
     if (tamDosis + packDosis.size() != dosis.size())
         throw DosisNoSuministradas();
@@ -155,7 +156,7 @@ int CentroVacunacion::verDosisRestantes() {
 
 /* OPERADORES*/
 
-CentroVacunacion & CentroVacunacion::operator=(const CentroVacunacion & right) {
+CentroVacunacion &CentroVacunacion::operator=(const CentroVacunacion &right) {
     this->direccion = right.direccion;
     this->dosis = right.dosis;
     this->id = right.id;
@@ -165,7 +166,7 @@ CentroVacunacion & CentroVacunacion::operator=(const CentroVacunacion & right) {
     return *this;
 }
 
-bool CentroVacunacion::operator==(const CentroVacunacion & right) const {
+bool CentroVacunacion::operator==(const CentroVacunacion &right) const {
     if (this->id == right.id) {
         return true;
     } else return false;
@@ -192,6 +193,6 @@ void CentroVacunacion::setId(int id) {
     this->id = id;
 }
 
-void CentroVacunacion::setGv(GestionVacunas * gv) {
+void CentroVacunacion::setGv(GestionVacunas *gv) {
     this->gv = gv;
 }

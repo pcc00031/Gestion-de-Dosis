@@ -27,7 +27,7 @@ enum class Fabricante {
  * @param f
  * @return 
  */
-inline std::ostream& operator<<(std::ostream & os, const Fabricante f) {
+inline std::ostream &operator<<(std::ostream &os, const Fabricante f) {
     switch (f) {
         case Fabricante::Pfizer:
             std::cout << "Pfizer";
@@ -41,7 +41,7 @@ inline std::ostream& operator<<(std::ostream & os, const Fabricante f) {
         case Fabricante::Johnson:
             std::cout << "Johnson";
             break;
-dafault:
+        dafault:
             std::cout << "Vacuna no reconocida";
             break;
     }
@@ -60,11 +60,13 @@ enum class Estado {
  * @param e
  * @return 
  */
-inline std::ostream& operator<<(std::ostream & os, const Estado e) {
+inline std::ostream &operator<<(std::ostream &os, const Estado e) {
     switch (e) {
-        case Estado::administrada: std::cout << "Administrada";
+        case Estado::administrada:
+            std::cout << "Administrada";
             break;
-        case Estado::enAlmacen: std::cout << "En Almacen";
+        case Estado::enAlmacen:
+            std::cout << "En Almacen";
             break;
         default:
             std::cout << "Estado no definido";
@@ -88,8 +90,11 @@ public:
     /* CONSTRUCTORES Y DESTRUCTOR */
 
     Dosis();
+
     Dosis(int id, int idLote, Fecha fechaFabricacion, Fecha fechaCaducidad);
-    Dosis(const Dosis& orig);
+
+    Dosis(const Dosis &orig);
+
     virtual ~Dosis();
 
     /* METODOS */
@@ -98,36 +103,54 @@ public:
 
     /* OPERADORES */
 
-    Dosis& operator=(const Dosis& right);
-    bool operator!=(const Dosis& right) const;
-    bool operator<(const Dosis& right) const;
-    bool operator<=(const Dosis& right) const;
-    bool operator==(const Dosis& right) const;
-    bool operator>(const Dosis& right) const;
-    bool operator>=(const Dosis& right) const;
-    friend std::ostream& operator<<(std::ostream& os, const Dosis& obj);
+    Dosis &operator=(const Dosis &right);
+
+    bool operator!=(const Dosis &right) const;
+
+    bool operator<(const Dosis &right) const;
+
+    bool operator<=(const Dosis &right) const;
+
+    bool operator==(const Dosis &right) const;
+
+    bool operator>(const Dosis &right) const;
+
+    bool operator>=(const Dosis &right) const;
+
+    friend std::ostream &operator<<(std::ostream &os, const Dosis &obj);
 
     /* GETTERS Y SETTERS */
 
     Fecha GetFechaCaducidad() const;
+
     void SetFechaCaducidad(Fecha fechaCaducidad);
+
     Fecha GetFechaFabricacion() const;
+
     void SetFechaFabricacion(Fecha fechaFabricacion);
+
     int GetId() const;
+
     void SetId(int id);
+
     int GetIdLote() const;
+
     void SetIdLote(int idLote);
+
     Fabricante GetFabricante() const;
+
     void SetFabricante(Fabricante fabricante);
+
     Estado getEstado() const;
+
     void setEstado(Estado estado);
 
 };
 
-inline std::ostream& operator<<(std::ostream& os, const Dosis& obj) {
+inline std::ostream &operator<<(std::ostream &os, const Dosis &obj) {
     std::cout << "   - ID: " << obj.id << std::endl
-            << "   - Fabricante: " << obj.fabricante << std::endl
-            << "   - Fecha Fab: " << obj.fechaFabricacion << std::endl;
+              << "   - Fabricante: " << obj.fabricante << std::endl
+              << "   - Fecha Fab: " << obj.fechaFabricacion << std::endl;
     return os;
 }
 

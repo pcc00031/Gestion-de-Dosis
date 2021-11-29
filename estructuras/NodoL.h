@@ -18,18 +18,18 @@ public:
     // Constructor
 
     NodoL(T &aDato, NodoL *aSig = 0) :
-    dato(aDato), sig(aSig) {
+            dato(aDato), sig(aSig) {
     }
 
     // Constructor copia
 
-    NodoL(const NodoL<T>& orig) :
-    dato(orig.dato), sig(orig.sig) {
+    NodoL(const NodoL<T> &orig) :
+            dato(orig.dato), sig(orig.sig) {
     }
 
     // Operador de asignacion
 
-    NodoL<T>& operator=(const NodoL<T>& right) {
+    NodoL<T> &operator=(const NodoL<T> &right) {
         if (this == &right)
             return *this;
         this->sig = right.sig;

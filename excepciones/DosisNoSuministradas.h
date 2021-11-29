@@ -14,7 +14,7 @@ using namespace std;
 class DosisNoSuministradas : public exception {
 public:
 
-    const char* what() const throw () {
+    const char *what() const throw() {
         return "Las dosis no han sido suministradas";
     }
 };

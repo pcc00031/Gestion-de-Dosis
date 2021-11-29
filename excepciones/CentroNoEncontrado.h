@@ -15,7 +15,7 @@ using namespace std;
 class CentroNoEncontrado : public exception {
 public:
 
-    const char* what() const throw () {
+    const char *what() const throw() {
         return "El centro no ha sido encontrado";
     }
 };

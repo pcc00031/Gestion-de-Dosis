@@ -15,13 +15,13 @@ Dosis::Dosis() {
 }
 
 Dosis::Dosis(int id, int idLote, Fecha fechaFabricacion, Fecha fechaCaducidad) :
-id(id), idLote(idLote), fechaFabricacion(fechaFabricacion), fechaCaducidad(fechaCaducidad) {
+        id(id), idLote(idLote), fechaFabricacion(fechaFabricacion), fechaCaducidad(fechaCaducidad) {
     this->estado = Estado::enAlmacen;
 }
 
-Dosis::Dosis(const Dosis& orig) :
-id(orig.id), fabricante(orig.fabricante), idLote(orig.idLote),
-fechaCaducidad(orig.fechaCaducidad), fechaFabricacion(orig.fechaFabricacion), estado(orig.estado) {
+Dosis::Dosis(const Dosis &orig) :
+        id(orig.id), fabricante(orig.fabricante), idLote(orig.idLote),
+        fechaCaducidad(orig.fechaCaducidad), fechaFabricacion(orig.fechaFabricacion), estado(orig.estado) {
 }
 
 /* METODOS */
@@ -29,13 +29,17 @@ fechaCaducidad(orig.fechaCaducidad), fechaFabricacion(orig.fechaFabricacion), es
 string Dosis::fabToString(const Fabricante &f) {
     string fab;
     switch (f) {
-        case Fabricante::Pfizer: fab = "Pfizer";
+        case Fabricante::Pfizer:
+            fab = "Pfizer";
             break;
-        case Fabricante::Moderna: fab = "Moderna";
+        case Fabricante::Moderna:
+            fab = "Moderna";
             break;
-        case Fabricante::AstraZeneca: fab = "AstraZeneca";
+        case Fabricante::AstraZeneca:
+            fab = "AstraZeneca";
             break;
-        case Fabricante::Johnson: fab = "Johnson";
+        case Fabricante::Johnson:
+            fab = "Johnson";
             break;
     }
     return fab;
@@ -43,7 +47,7 @@ string Dosis::fabToString(const Fabricante &f) {
 
 /* OPERADORES */
 
-Dosis& Dosis::operator=(const Dosis& right) {
+Dosis &Dosis::operator=(const Dosis &right) {
 
     this->id = right.id;
     this->fabricante = right.fabricante;
@@ -54,34 +58,34 @@ Dosis& Dosis::operator=(const Dosis& right) {
     return *this;
 }
 
-bool Dosis::operator!=(const Dosis& right) const {
+bool Dosis::operator!=(const Dosis &right) const {
     if (this->id == right.id) {
         return false;
     } else return true;
 }
 
-bool Dosis::operator<(const Dosis& right) const {
+bool Dosis::operator<(const Dosis &right) const {
 
     return right.fechaFabricacion > this->fechaFabricacion;
 }
 
-bool Dosis::operator<=(const Dosis& right) const {
+bool Dosis::operator<=(const Dosis &right) const {
 
     return right.id >= this->id; // Reuse greater than operator
 }
 
-bool Dosis::operator==(const Dosis& right) const {
+bool Dosis::operator==(const Dosis &right) const {
     if (this->id == right.id) {
         return true;
     } else return false;
 }
 
-bool Dosis::operator>(const Dosis& right) const {
+bool Dosis::operator>(const Dosis &right) const {
 
     return right.fechaFabricacion < this->fechaFabricacion;
 }
 
-bool Dosis::operator>=(const Dosis& right) const {
+bool Dosis::operator>=(const Dosis &right) const {
 
     return right.id <= this->id; // Reuse greater than operator
 }

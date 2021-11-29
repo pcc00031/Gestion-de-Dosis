@@ -24,52 +24,68 @@ int main() {
             case 1:
             {
                 GestionVacunas gv;
-                THashTarjetaVacunacion tabla1(15383);
-                THashTarjetaVacunacion tabla2(15383);
-                THashTarjetaVacunacion tabla3(15383);
+                THashTarjetaVacunacion tabla1(15383, 0);
+                THashTarjetaVacunacion tabla2(15383, 1);
+                THashTarjetaVacunacion tabla3(15383, 2);
 
-                vector<string> listadoNSS = gv.listadoCompletoNSS();
+                vector <string> listadoNSS = gv.listadoCompletoNSS();
                 Usuario *u;
                 for (int i = 0; i < listadoNSS.size(); i++) {
                     TarjetaVacunacion t;
                     u = gv.buscarUsuario(listadoNSS[i]);
                     t.setId(u->GetNSS() + "-" + u->GetNombre());
-                    tabla1.insertar1(stol(u->GetNSS()), t);
-                    tabla2.insertar2(stol(u->GetNSS()), t);
-                    tabla3.insertar3(stol(u->GetNSS()), t);
+                    tabla1.insertar(stol(u->GetNSS()), t);
+                    tabla2.insertar(stol(u->GetNSS()), t);
+                    tabla3.insertar(stol(u->GetNSS()), t);
                 }
-                cout << "factor carga 1: " << tabla1.factorCarga() << endl;
-                cout << "colisiones 1: " << tabla1.maxColisiones() << endl;
-                cout << "numero tarjetas 1: " << tabla1.numTarjetas() << endl;
+                cout << "*ESTADISTICAS HASH1 - TAM TABLA: 15383*" << endl;
+                cout << "- Numero tarjetas insertadas: " << tabla1.numTarjetas() << endl;
+                cout << "- Factor carga: " << tabla1.factorCarga() << endl;
+                cout << "- Maximo Colisiones: " << tabla1.maxColisiones() << endl;
+                cout << "- Promedio colisiones: " << tabla1.promedioColisiones() << endl << endl;
 
-                cout << "factor carga 2: " << tabla2.factorCarga() << endl;
-                cout << "colisiones 2: " << tabla2.maxColisiones() << endl;
+                cout << "*ESTADISTICAS HASH2 - TAM TABLA: 15383*" << endl;
+                cout << "- Numero tarjetas insertadas: " << tabla2.numTarjetas() << endl;
+                cout << "- Factor carga: " << tabla2.factorCarga() << endl;
+                cout << "- Maximo Colisiones: " << tabla2.maxColisiones() << endl;
+                cout << "- Promedio colisiones: " << tabla2.promedioColisiones() << endl << endl;
 
-                cout << "factor carga 3: " << tabla3.factorCarga() << endl;
-                cout << "colisiones 3: " << tabla3.maxColisiones() << endl;
+                cout << "*ESTADISTICAS HASH3 - TAM TABLA: 15383*" << endl;
+                cout << "- Numero tarjetas insertadas: " << tabla3.numTarjetas() << endl;
+                cout << "- Factor carga: " << tabla3.factorCarga() << endl;
+                cout << "- Maximo Colisiones: " << tabla3.maxColisiones() << endl;
+                cout << "- Promedio colisiones: " << tabla3.promedioColisiones() << endl << endl;
 
-                THashTarjetaVacunacion tabla4(14713);
-                THashTarjetaVacunacion tabla5(14713);
-                THashTarjetaVacunacion tabla6(14713);
+                THashTarjetaVacunacion tabla4(14713, 0);
+                THashTarjetaVacunacion tabla5(14713, 1);
+                THashTarjetaVacunacion tabla6(14713, 2);
 
                 for (int i = 0; i < listadoNSS.size(); i++) {
                     TarjetaVacunacion t;
                     u = gv.buscarUsuario(listadoNSS[i]);
                     t.setId(u->GetNSS() + "-" + u->GetNombre());
-                    tabla4.insertar1(stol(u->GetNSS()), t);
-                    tabla5.insertar2(stol(u->GetNSS()), t);
-                    tabla6.insertar3(stol(u->GetNSS()), t);
-
+                    tabla4.insertar(stol(u->GetNSS()), t);
+                    tabla5.insertar(stol(u->GetNSS()), t);
+                    tabla6.insertar(stol(u->GetNSS()), t);
                 }
 
-                cout << "factor carga 4: " << tabla4.factorCarga() << endl;
-                cout << "colisiones 4: " << tabla4.maxColisiones() << endl;
+                cout << "*ESTADISTICAS HASH1 - TAM TABLA: 14713*" << endl;
+                cout << "- Numero tarjetas insertadas: " << tabla4.numTarjetas() << endl;
+                cout << "- Factor carga: " << tabla4.factorCarga() << endl;
+                cout << "- Maximo Colisiones: " << tabla4.maxColisiones() << endl;
+                cout << "- Promedio colisiones: " << tabla4.promedioColisiones() << endl << endl;
 
-                cout << "factor carga 5: " << tabla5.factorCarga() << endl;
-                cout << "colisiones 5: " << tabla5.maxColisiones() << endl;
+                cout << "*ESTADISTICAS HASH2 - TAM TABLA: 14713*" << endl;
+                cout << "- Numero tarjetas insertadas: " << tabla5.numTarjetas() << endl;
+                cout << "- Factor carga: " << tabla5.factorCarga() << endl;
+                cout << "- Maximo Colisiones: " << tabla5.maxColisiones() << endl;
+                cout << "- Promedio colisiones: " << tabla1.promedioColisiones() << endl << endl;
 
-                cout << "factor carga 6: " << tabla6.factorCarga() << endl;
-                cout << "colisiones 6: " << tabla6.maxColisiones() << endl;
+                cout << "*ESTADISTICAS HASH3 - TAM TABLA: 14713*" << endl;
+                cout << "- Numero tarjetas insertadas: " << tabla6.numTarjetas() << endl;
+                cout << "- Factor carga: " << tabla6.factorCarga() << endl;
+                cout << "- Maximo Colisiones: " << tabla6.maxColisiones() << endl;
+                cout << "- Promedio colisiones: " << tabla6.promedioColisiones() << endl << endl;
             }
                 break;
 
@@ -82,7 +98,7 @@ int main() {
                 GestionVacunas gv;
                 Usuario *u;
                 TarjetaVacunacion *t;
-                vector<string> listadoNSS = gv.listadoCompletoNSS();
+                vector <string> listadoNSS = gv.listadoCompletoNSS();
 
                 gv.suministrarNDosisAlCentro(gv.buscarCentro(1), 8000);
                 gv.suministrarNDosisAlCentro(gv.buscarCentro(2), 8200);
@@ -91,7 +107,8 @@ int main() {
                 gv.suministrarNDosisAlCentro(gv.buscarCentro(5), 50);
 
                 cout << endl << "-------------------------------------------------------------------------------"
-                        "-------------------------------------------------------------------------------" << endl << endl;
+                        "-------------------------------------------------------------------------------"
+                        << endl << endl;
 
                 // Generacion de Tarjetas de Vacunacion
 
@@ -102,7 +119,8 @@ int main() {
                 cout << "- Tarjetas cargadas: " << conte << endl << endl;
 
                 cout << "-------------------------------------------------------------------------------"
-                        "-------------------------------------------------------------------------------" << endl << endl;
+                        "-------------------------------------------------------------------------------" << endl
+                        << endl;
 
                 // Mostrar factor de carga y tam de la tabla Hash
 
@@ -110,7 +128,8 @@ int main() {
                         << "- Tam de la tabla: " << endl << endl;
 
                 cout << "-------------------------------------------------------------------------------"
-                        "-------------------------------------------------------------------------------" << endl << endl;
+                        "-------------------------------------------------------------------------------" << endl
+                        << endl;
 
                 // Eliminar las tarjetas de vacunación de todos los usuarios cuyo NSS acabe en ‘0’ de la tabla hash.
 
@@ -130,7 +149,8 @@ int main() {
                 cout << "- Total tarjetas borradas: " << conte << endl;
 
                 cout << endl << "-------------------------------------------------------------------------------"
-                        "-------------------------------------------------------------------------------" << endl << endl;
+                        "-------------------------------------------------------------------------------"
+                        << endl << endl;
 
                 // Añadir las tarjetas de vacunación anteriormente borradas de aquellos usuarios cuyo NSS acabe en ‘30’ a la tabla hash.
 
@@ -145,14 +165,16 @@ int main() {
                 cout << "- Tarjetas cargadas: " << conte << endl << endl;
 
                 cout << "-------------------------------------------------------------------------------"
-                        "-------------------------------------------------------------------------------" << endl << endl;
+                        "-------------------------------------------------------------------------------" << endl
+                        << endl;
 
                 // Mostrar el número de colisiones máximo que se han producido al volver a insertar las tarjetas de vacunación.
 
                 cout << "- Total colisiones: " << endl << endl;
 
                 cout << "-------------------------------------------------------------------------------"
-                        "-------------------------------------------------------------------------------" << endl << endl;
+                        "-------------------------------------------------------------------------------" << endl
+                        << endl;
 
                 // Vacunar a todos los usuarios cuyo NSS sea par de la primera dosis y mostrar el
                 // número de vacunados. Para ello, se debe obtener su tarjeta de vacunación.
@@ -180,7 +202,8 @@ int main() {
                         << gv.numTotalVacunasTipo(Fabricante::Moderna) << endl << endl;
 
                 cout << "-------------------------------------------------------------------------------"
-                        "-------------------------------------------------------------------------------" << endl << endl;
+                        "-------------------------------------------------------------------------------" << endl
+                        << endl;
 
                 // Vacunar de la segunda dosis a todos los usuarios que tengan entre 20 y 50 años.
 
@@ -212,7 +235,8 @@ int main() {
                         << gv.numTotalVacunasTipo(Fabricante::Moderna) << endl << endl;
 
                 cout << "-------------------------------------------------------------------------------"
-                        "-------------------------------------------------------------------------------" << endl << endl;
+                        "-------------------------------------------------------------------------------" << endl
+                        << endl;
 
                 // Vacunar a todos los usuarios cuyo NSS acabe en 2 o 6 que aún no tengan la pautacompleta.
 
@@ -229,7 +253,8 @@ int main() {
                     u = gv.buscarUsuario(listadoNSS[i]);
                     if (u != nullptr) {
                         t = gv.buscarTarjeta(u->GetNSS() + "-" + u->GetNombre());
-                        if (t != nullptr && t->dosisPorAdministrar() != 0 && t->getId() == u->GetNSS() + "-" + u->GetNombre()) {
+                        if (t != nullptr && t->dosisPorAdministrar() != 0 &&
+                                t->getId() == u->GetNSS() + "-" + u->GetNombre()) {
                             gv.vacunarUsuario(t);
                             cont++;
                         }
@@ -246,20 +271,23 @@ int main() {
                         << gv.numTotalVacunasTipo(Fabricante::Moderna) << endl << endl;
 
                 cout << "-------------------------------------------------------------------------------"
-                        "-------------------------------------------------------------------------------" << endl << endl;
+                        "-------------------------------------------------------------------------------" << endl
+                        << endl;
 
                 // Comprobar cuántos usuarios tienen pasaporte covid.
 
                 cout << "- Usuarios con pasaporte covid: " << gv.pasaporteCovid() << endl;
-                cout << "- Usuarios con pauta completa recomendable: " << gv.pautaCompletaRecomendable() << endl << endl;
+                cout << "- Usuarios con pauta completa recomendable: " << gv.pautaCompletaRecomendable() << endl
+                        << endl;
 
                 cout << "-------------------------------------------------------------------------------"
-                        "-------------------------------------------------------------------------------" << endl << endl;
+                        "-------------------------------------------------------------------------------" << endl
+                        << endl;
 
                 // APARTADO PAREJAS:
                 // Obtener el número de usuarios que tienen una dosis no recomendada y mostrarlo por pantalla
 
-                vector<Usuario*> listadoVNR = gv.listadoVacunacionNR();
+                vector < Usuario * > listadoVNR = gv.listadoVacunacionNR();
                 cout << "- Usuarios con vacunacion no recomendable: " << listadoVNR.size() << endl << endl;
             }
         }

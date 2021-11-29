@@ -16,7 +16,7 @@ using namespace std;
 class TarjetaNoEncontrada {
 public:
 
-    const char* what() const throw () {
+    const char *what() const throw() {
         return "La tarjeta no ha sido encontrado";
     }
 };

@@ -18,7 +18,7 @@ using namespace std;
 class UsuarioNoEncontrado : public exception {
 public:
 
-    const char* what() const throw () {
+    const char *what() const throw() {
         return "El usuario no ha sido encontrado";
     }
 };

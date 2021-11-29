@@ -14,7 +14,7 @@ using namespace std;
 class UsuarioNoAgregadoTarjeta : public exception {
 public:
 
-    const char* what() const throw () {
+    const char *what() const throw() {
         return "El usuario no ha sido agregado a la tarjeta";
     }
 };
